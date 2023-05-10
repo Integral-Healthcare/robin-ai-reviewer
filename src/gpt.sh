@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-GPT_MODEL="gpt-3.5-turbo-0301"
-
 INITIAL_PROMPT="I'm going to assign you a role. Your role is being a pull request code reviewer on our engineering team. \
   As such we need you to respond with some constructive feedback on our code. Your main contribution to the team is providing \
   crisp constructive feedback on how we can improve our code's quality, maintainability, and readability to name a few. The \

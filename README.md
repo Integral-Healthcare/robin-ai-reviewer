@@ -4,6 +4,15 @@
 
 Named after Batman's assistant, Robin AI is an open source Github project that automatically reviews Github pull requests, providing a letter grade from A to F, suggested improvements, and sample code for improvement. It is deployed as a Github action and requires two parameters: `GITHUB_TOKEN`, which is automatically supplied by Github for the user, and `OPEN_AI_API_KEY`, which is an API key from Open AI's developer portal.
 
+## Arguments
+
+| Name                | Required | Default Value             | Description                                                                                                       |
+|---------------------|----------|---------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `GITHUB_TOKEN`      | Yes      | Automatically supplied    | A Github access token with the `repo` and `pull_request` scopes.                                                  |
+| `OPEN_AI_API_KEY`   | Yes      | N/A                       | An API key from Open AI's developer portal.                                                                       |
+| `gpt_model_name`    | No       | `gpt-3.5-turbo-0301`      | The name of the GPT model to use for text generation.                                                             |
+| `github_api_url`    | No       | `https://api.github.com`  | The URL for the Github API endpoint. (Only relevant to enterprise customers.)                                               |
+
 ## Installation
 
 To use Robin AI in your Github project, you'll need to add it as a Github action. Here's how:

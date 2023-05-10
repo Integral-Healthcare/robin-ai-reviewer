@@ -7,6 +7,10 @@ inputs:
   OPEN_AI_API_KEY:
     description: 'Open API token'
     required: true
+  gpt_model_name:
+    description: 'The OpenAI used to generate the chat completion'
+    required: false
+    default: 'gpt-3.5-turbo-0301'
   github_api_url:
     description: 'URL to the API of your Github Server, only necessary for Github Enterprise customers'
     required: false
@@ -17,6 +21,7 @@ runs:
   args:
     - --github_token=${{ inputs.GITHUB_TOKEN }}
     - --open_ai_api_key=${{ inputs.OPEN_AI_API_KEY }}
+    - --gpt_model_name=${{ inputs.gpt_model_name }}
     - --github_api_url=${{ inputs.github_api_url }}
 branding:
   icon: 'tag'
