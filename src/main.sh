@@ -7,7 +7,7 @@ source "$HOME_DIR/src/gpt.sh"
 ##? Auto-reviews a Pull Request
 ##?
 ##? Usage:
-##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --gpt_model_temp=<temp> --github_api_url=<url>
+##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --github_api_url=<url>
 main() {
   eval "$(/root/bin/docpars -h "$(grep "^##?" "$HOME_DIR/src/main.sh" | cut -c 5-)" : "$@")"
 
