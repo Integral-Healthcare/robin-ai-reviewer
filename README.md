@@ -1,6 +1,8 @@
 # Robin AI
 
-Robin AI is an open source Github project that automatically reviews Github pull requests, providing a letter grade from A to F, suggested improvements, and sample code for improvement. It is deployed as a Github action and requires two parameters: `GITHUB_TOKEN`, which is automatically supplied by Github for the user, and `OPEN_AI_API_KEY`, which is an API key from Open AI's developer portal.
+<img src="./robin.png" alt="Robin watercolor image" style="width: 200px; height: 200px;"/>
+
+Named after Batman's assistant, Robin AI is an open source Github project that automatically reviews Github pull requests, providing a letter grade from A to F, suggested improvements, and sample code for improvement. It is deployed as a Github action and requires two parameters: `GITHUB_TOKEN`, which is automatically supplied by Github for the user, and `OPEN_AI_API_KEY`, which is an API key from Open AI's developer portal.
 
 ## Installation
 
@@ -14,9 +16,7 @@ To use Robin AI in your Github project, you'll need to add it as a Github action
 ```yml
 name: Robin AI Reviewer
 
-on:
-  pull_request:
-    types: [opened, edited]
+on: [pull_request]
 
 jobs:
   build:
