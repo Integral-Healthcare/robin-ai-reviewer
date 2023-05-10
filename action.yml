@@ -22,7 +22,6 @@ runs:
     - --github_token=${{ inputs.GITHUB_TOKEN }}
     - --open_ai_api_key=${{ inputs.OPEN_AI_API_KEY }}
     - --gpt_model_name=${{ inputs.gpt_model_name }}
-    - --gpt_model_temp=${{ inputs.gpt_model_temp }}
     - --github_api_url=${{ inputs.github_api_url }}
 branding:
   icon: 'tag'
