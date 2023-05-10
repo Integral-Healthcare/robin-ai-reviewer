@@ -1,0 +1,23 @@
+name: 'RobinAI'
+description: 'Auto-Review your teams pull requests'
+inputs:
+  GITHUB_TOKEN:
+    description: 'GitHub API token'
+    required: true
+  OPEN_AI_API_KEY:
+    description: 'Open API token'
+    required: true
+  github_api_url:
+    description: 'URL to the API of your Github Server, only necessary for Github Enterprise customers'
+    required: false
+    default: 'https://api.github.com'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - --github_token=${{ inputs.GITHUB_TOKEN }}
+    - --open_ai_api_key=${{ inputs.OPEN_AI_API_KEY }}
+    - --github_api_url=${{ inputs.github_api_url }}
+branding:
+  icon: 'tag'
+  color: 'purple'
