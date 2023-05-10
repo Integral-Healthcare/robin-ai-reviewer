@@ -13,6 +13,9 @@ main() {
 
   utils::env_variable_exist "GITHUB_REPOSITORY"
   utils::env_variable_exist "GITHUB_EVENT_PATH"
+  utils::env_variable_exist "github_token"
+  utils::env_variable_exist "github_api_url"
+  utils::env_variable_exist "open_ai_api_key"
 
   export GITHUB_TOKEN="$github_token"
   export GITHUB_API_URL="$github_api_url"

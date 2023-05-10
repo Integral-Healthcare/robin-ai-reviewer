@@ -1,9 +1,9 @@
-name: robin-ai-reviewer
+name: Robin AI Reviewer
 
 on: [pull_request]
 
 jobs:
-  robin-ai-reviewer:
+  build:
     runs-on: ubuntu-latest
     name: Review the open PR
     steps:
