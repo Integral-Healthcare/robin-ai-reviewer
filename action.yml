@@ -1,4 +1,4 @@
-name: 'RobinAI'
+name: 'Robin AI Reviewer'
 description: 'Auto-Review your teams pull requests'
 inputs:
   GITHUB_TOKEN:
