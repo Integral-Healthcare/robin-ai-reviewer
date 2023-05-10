@@ -50,7 +50,14 @@ With those steps complete, Robin AI will automatically run every time a pull req
 When Robin AI runs, it will post a comment on the pull request with its letter grade, suggested improvements, and sample code for improvement. You can use this information to improve the quality of your code and make your pull requests more likely to be accepted.
 
 ## Performance
-Great emphasis has been put on ensuring a performant runtime. The docker image size is `18.5MB` and the action runtime is `14s` on average.
+Great emphasis has been put on ensuring a performant runtime.
+
+| Metric         | Value     |
+|----------------|-----------|
+| Docker Image Size  | 18.5MB   |
+| Average Action Runtime | 14s |
+
+The Docker image for Robin AI has a size of 18.5MB, which is relatively small and should be quick to download and use. On average, the Robin AI Github action runtime is 14 seconds, which means that it should be able to process pull requests quickly and efficiently. These metrics may vary depending on factors such as the size and complexity of the code being reviewed, the speed of the internet connection, and the availability of Open AI's API.
 
 ## Contributing
 
