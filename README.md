@@ -11,8 +11,8 @@ To use Robin AI in your Github project, you'll need to add it as a Github action
 3. Select the option to "Set up a workflow yourself".
 4. Copy and paste the following code into the new file:
 
-```
-name: Robin AI Review
+```yml
+name: Robin AI Reviewer
 
 on:
   pull_request:
@@ -23,14 +23,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run Robin AI
-        uses: Integral-Healthcare/robin-ai-reviewer-action@v1
+        uses: actions/checkout@v3
+      - name: Robin AI Reviewer
+        uses: Integral-Healthcare/robin-ai-reviewer@v[INSERT_LATEST_RELEASE]
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
 ```
 
-5. Save the file with a name like "robin-ai.yml".
+5. Save the file with a name like `robin.yml`.
 6. Create a secret in your Github repository called `OPEN_AI_API_KEY` and set it to the value of your Open AI API key.
 
 With those steps complete, Robin AI will automatically run every time a pull request is opened or edited in your Github repository.
