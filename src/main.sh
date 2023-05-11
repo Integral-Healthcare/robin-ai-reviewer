@@ -28,6 +28,11 @@ main() {
 
   local -r gpt_response=$(gpt::prompt_model "$commit_diff")
 
+  if [ -z "$gpt_response" ]; then
+    echoerr "GPT's response was NULL. There must be an error. Double check your API key"
+    exit 1
+  fi
+
   github::comment "$gpt_response" "$pr_number"
 
   exit $?
