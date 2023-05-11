@@ -26,12 +26,9 @@ To use Robin AI in your Github project, you'll need to add it as a Github action
 name: Robin AI Reviewer
 
 on:
-  # skip draft PRs
   pull_request:
-    - opened
-    - reopened
-    - synchronize
-    - ready_for_review
+    # skip draft PRs
+    types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:
   build:
