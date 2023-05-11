@@ -6,7 +6,7 @@ Named after Batman's assistant, Robin AI is an open source Github project that a
 
 ## Demo
 
-![Demo video]("/assets/demo.gif")
+![Demo video](/assets/demo.gif)
 
 ## Arguments
 
