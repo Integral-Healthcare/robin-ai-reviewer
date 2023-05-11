@@ -2,11 +2,7 @@
 
 <img src="/assets/robin.png" alt="Robin watercolor image" style="width: 200px; height: 200px;"/>
 
-Named after Batman's assistant, Robin AI is an open source Github project that automatically reviews Github pull requests, providing a letter grade from A to F, suggested improvements, and sample code for improvement.
-
-## Demo
-
-![Demo video](/assets/demo.gif)
+Named after Batman's assistant, Robin AI is an open source Github project that automatically reviews Github pull requests, providing a score (0-100), suggested improvements, and sample code for improvement.
 
 ## Arguments
 
@@ -29,7 +25,13 @@ To use Robin AI in your Github project, you'll need to add it as a Github action
 ```yml
 name: Robin AI Reviewer
 
-on: [pull_request]
+on:
+  # skip draft PRs
+  pull_request:
+    - opened
+    - reopened
+    - synchronize
+    - ready_for_review
 
 jobs:
   build:
@@ -51,7 +53,7 @@ With those steps complete, Robin AI will automatically run every time a pull req
 
 ## Usage
 
-When Robin AI runs, it will post a comment on the pull request with its letter grade, suggested improvements, and sample code for improvement. You can use this information to improve the quality of your code and make your pull requests more likely to be accepted.
+When Robin AI runs, it will post a comment on the pull request with its score out of 100, suggested improvements, and sample code for improvement. You can use this information to improve the quality of your code and make your pull requests more likely to be accepted.
 
 ## Performance
 Great emphasis has been put on ensuring a performant runtime.
@@ -63,9 +65,13 @@ Great emphasis has been put on ensuring a performant runtime.
 
 The Docker image for Robin AI has a size of 18.5MB, which is relatively small and should be quick to download and use. On average, the Robin AI Github action runtime is 14 seconds, which means that it should be able to process pull requests quickly and efficiently. These metrics may vary depending on factors such as the size and complexity of the code being reviewed, the speed of the internet connection, and the availability of Open AI's API.
 
+## Demo
+
+Here's a [link to the demo](https://twitter.com/johnkuhn58/status/1656460223685509122)
+
 ## Contributing
 
-If you'd like to contribute to Robin AI, we welcome your input! Please feel free to submit issues or pull requests on our Github repository.
+If you'd like to contribute to Robin AI, we welcome your input! Please feel free to submit issues or pull requests on our Github repository. You may also message me [on twitter](https://twitter.com/johnkuhn58/).
 
 ## License
 
