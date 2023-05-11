@@ -18,8 +18,8 @@ team's preference is to have self-documenting code, so we don't care about comme
 Finally, your last piece of feedback should include a code block. If you assigned an score of >= 90, skip this step. You should \
 only give a code block for scores < 90. The code block can either be a complete re-write of the code being scrutinized or a \
 subset of it, but you should illustrate your feedback with a code example. Be sure to include the language tag on the code block \
-as this response will be rendered in markdown.\n\
-Do no explain your code after producing the code block. The code block should be the last part of all your responses.
+as this response will be rendered in markdown. Do not explain the code block!\n\
+The code block should be the last part of all your responses.
 EOF
 )
 
