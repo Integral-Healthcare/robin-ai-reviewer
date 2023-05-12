@@ -32,6 +32,13 @@ gpt::prompt_model() {
     -d "$(jq -n --arg model "$GPT_MODEL" --arg prompt "$INITIAL_PROMPT" --arg git_diff "$git_diff" '{model: $model, messages: [{role: "user", content: $prompt}, {role: "user", content: $git_diff}]}')" \
     "https://api.openai.com/v1/chat/completions")
 
+  local -r error=$(echo "$body" | jq -r '.error')
+
+  if [[ "$error" != "null" ]]; then
+    echoerr "API request failed: $error"
+    exit 1
+  fi
+
   local -r response=$(echo "$body" | jq -r '.choices[0].message.content')
 
   echo "$response"

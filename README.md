@@ -48,9 +48,13 @@ jobs:
 
 With those steps complete, Robin AI will automatically run every time a pull request is opened or edited in your Github repository.
 
+## OPEN_AI_API_KEY
+
+You'll have to navigate to [OpenAI's developer portal](https://platform.openai.com/account/api-keys) to generate an API key. Further, you'll have to put a card on file before the API key will become active. You can see the [pricing details here](https://openai.com/pricing), but for the default `gpt-3.5-turbo` model, pricing is `$0.002 / 1K tokens`, which translates to < $5 / month even for organizations making daily pull requests.
+
 ## Usage
 
-When Robin AI runs, it will post a comment on the pull request with its score out of 100, suggested improvements, and sample code for improvement. You can use this information to improve the quality of your code and make your pull requests more likely to be accepted.
+When Robin AI runs, it will post a comment on the pull request with its score out of 100, suggested improvements, and sample code for improvement. You can use this information to improve the quality of your code and make your pull requests more likely to be accepted. 
 
 ## Performance
 Great emphasis has been put on ensuring a performant runtime.

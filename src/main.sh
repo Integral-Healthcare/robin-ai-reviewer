@@ -11,25 +11,20 @@ source "$HOME_DIR/src/gpt.sh"
 main() {
   eval "$(/root/bin/docpars -h "$(grep "^##?" "$HOME_DIR/src/main.sh" | cut -c 5-)" : "$@")"
 
-  utils::env_variable_exist "GITHUB_REPOSITORY"
-  utils::env_variable_exist "GITHUB_EVENT_PATH"
-  utils::env_variable_exist "github_token"
-  utils::env_variable_exist "github_api_url"
-  utils::env_variable_exist "open_ai_api_key"
-  utils::env_variable_exist "gpt_model_name"
+  utils::verify_required_env_vars
 
   export GITHUB_TOKEN="$github_token"
   export GITHUB_API_URL="$github_api_url"
   export OPEN_AI_API_KEY="$open_ai_api_key"
   export GPT_MODEL="$gpt_model_name"
 
-  local -r pr_number=$(utils::get_pr_number)
+  local -r pr_number=$(github::get_pr_number)
   local -r commit_diff=$(github::get_commit_diff "$pr_number")
 
   local -r gpt_response=$(gpt::prompt_model "$commit_diff")
 
   if [ -z "$gpt_response" ]; then
-    echoerr "GPT's response was NULL. There must be an error. Double check your API key"
+    echoerr "GPT's response was NULL. Double check your API key and billing details."
     exit 1
   fi
 
