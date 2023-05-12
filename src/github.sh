@@ -2,6 +2,10 @@
 
 GITHUB_API_HEADER="Accept: application/vnd.github.v3.diff"
 
+github::get_pr_number() {
+  jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH"
+}
+
 github::get_commit_diff() {
   local -r pr_number="$1"
   local -r body=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" -H "$GITHUB_API_HEADER" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$pr_number")
