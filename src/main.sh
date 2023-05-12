@@ -11,24 +11,29 @@ source "$HOME_DIR/src/gpt.sh"
 main() {
   eval "$(/root/bin/docpars -h "$(grep "^##?" "$HOME_DIR/src/main.sh" | cut -c 5-)" : "$@")"
 
-  utils::verify_required_env_vars
+  verify_required_env_vars
 
   export GITHUB_TOKEN="$github_token"
   export GITHUB_API_URL="$github_api_url"
   export OPEN_AI_API_KEY="$open_ai_api_key"
   export GPT_MODEL="$gpt_model_name"
 
-  local -r pr_number=$(github::get_pr_number)
-  local -r commit_diff=$(github::get_commit_diff "$pr_number")
+  local -r PR_NUMBER=$(github::get_pr_number)
+  local -r COMMIT_DIFF=$(github::get_commit_diff "$PR_NUMBER")
 
-  local -r gpt_response=$(gpt::prompt_model "$commit_diff")
-
-  if [ -z "$gpt_response" ]; then
-    echoerr "GPT's response was NULL. Double check your API key and billing details."
+   if [ -z "$COMMIT_DIFF" ]; then
+    echoerr "Error: Failed to get the commit diff."
     exit 1
   fi
 
-  github::comment "$gpt_response" "$pr_number"
+  local -r GPT_RESPONSE=$(gpt::prompt_model "$COMMIT_DIFF")
+
+  if [ -z "$GPT_RESPONSE" ]; then
+    echoerr "Error: GPT's response was NULL. Double check your API key and billing details."
+    exit 1
+  fi
+
+  github::comment "$GPT_RESPONSE" "$PR_NUMBER"
 
   exit $?
 }

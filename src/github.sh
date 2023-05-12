@@ -1,27 +1,43 @@
 #!/usr/bin/env bash
 
-GITHUB_API_HEADER="Accept: application/vnd.github.v3.diff"
+GITHUB_API_DIFF_HEADER="Accept: application/vnd.github.v3.diff"
+GITHUB_API_HEADER="Accept: application/vnd.github.v3+json"
 
+# Gets the PR number from the GitHub event
 github::get_pr_number() {
   jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH"
 }
 
+# Gets the diff of the commit in the PR
 github::get_commit_diff() {
-  local -r pr_number="$1"
-  local -r body=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" -H "$GITHUB_API_HEADER" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$pr_number")
+  local -r PR_NUMBER="$1"
+  local -r BODY=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" -H "$GITHUB_API_DIFF_HEADER" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")
 
-  echo "$body"
+  if [[ "$BODY" == *"Not Found"* ]]; then
+    echoerr "Error: Pull request not found."
+    exit 1
+  fi
+
+  echo "$BODY"
 }
 
+# Posts a comment on the PR
 github::comment() {
-  local -r comment="$1"
-  local -r pr_number="$2"
+  local -r COMMENT="$1"
+  local -r PR_NUMBER="$2"
 
-  curl -sSL \
+  local -r RESPONSE=$(curl -sSL \
     -H "Authorization: token $GITHUB_TOKEN" \
-    -H "Accept: application/vnd.github.v3+json" \
+    -H "$GITHUB_API_HEADER" \
     -X POST \
     -H "Content-Type: application/json" \
-    -d "$(jq -n --arg comment "$comment" '{body: $comment}')" \
-    "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/issues/$pr_number/comments"
+    -d "$(jq -n --arg comment "$COMMENT" '{body: $comment}')" \
+    "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments")
+
+  if [[ "$RESPONSE" == *"Not Found"* ]]; then
+    echoerr "Error: Failed to post comment."
+    exit 1
+  fi
+
+  echo "Comment posted successfully."
 }
