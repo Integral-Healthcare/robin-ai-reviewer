@@ -27,8 +27,7 @@ name: Robin AI Reviewer
 
 on:
   pull_request:
-    # skip draft PRs
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [ready_for_review]
 
 jobs:
   build:
@@ -41,6 +40,10 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
+          files_to_ignore: |
+            "README.md"
+            "assets/*"
+            "package-lock.json"
 ```
 
 5. Save the file with a name like `robin.yml`.
