@@ -21,8 +21,6 @@ main() {
   local -r pr_number=$(github::get_pr_number)
   local -r commit_diff=$(github::get_commit_diff "$pr_number" "$files_to_ignore")
 
-  echo "$commit_diff"
-
   if [ -z "$commit_diff" ]; then
     echo "Nothing in the commit diff."
     exit
