@@ -8,9 +8,40 @@ github::get_pr_number() {
 
 github::get_commit_diff() {
   local -r pr_number="$1"
-  local -r body=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" -H "$GITHUB_API_HEADER" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$pr_number")
+  local -r files_to_ignore="${2}"
 
-  echo "$body"
+  if [ -z "$files_to_ignore" ]; then
+    local -r body=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" -H "$GITHUB_API_HEADER" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$pr_number")
+
+    echo "$body"
+  else
+    local -r body=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" -H "$GITHUB_API_HEADER" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$pr_number/files?per_page=100")
+
+    local diffs=""
+
+    for file in $(echo "$body" | jq -r '.[] | @base64'); do
+      _jq() {
+        echo ${file} | base64 -d | jq -r ${1}
+      }
+
+      filename=$(_jq '.filename')
+      ignore=false
+
+      for pattern in $files_to_ignore; do
+        if [[ $filename == $pattern ]]; then
+          ignore=true
+          break
+        fi
+      done
+
+      if [ "$ignore" = false ]; then
+        diffs+=$(_jq '.patch')
+        diffs+=$'\n\n'
+      fi
+    done
+
+    echo "$diffs"
+  fi
 }
 
 github::comment() {

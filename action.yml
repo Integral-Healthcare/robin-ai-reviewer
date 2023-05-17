@@ -15,6 +15,10 @@ inputs:
     description: 'URL to the API of your Github Server, only necessary for Github Enterprise customers'
     required: false
     default: 'https://api.github.com'
+  files_to_ignore:
+    description: 'Whitespace separated list of files to ignore'
+    required: false
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -23,6 +27,7 @@ runs:
     - --open_ai_api_key=${{ inputs.OPEN_AI_API_KEY }}
     - --gpt_model_name=${{ inputs.gpt_model_name }}
     - --github_api_url=${{ inputs.github_api_url }}
+    - --files_to_ignore=${{ inputs.files_to_ignore }}
 branding:
   icon: 'tag'
   color: 'purple'
