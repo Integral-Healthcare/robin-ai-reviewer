@@ -7,7 +7,7 @@ source "$HOME_DIR/src/gpt.sh"
 ##? Auto-reviews a Pull Request
 ##?
 ##? Usage:
-##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --github_api_url=<url>
+##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --github_api_url=<url> --files_to_ignore=<files>
 main() {
   eval "$(/root/bin/docpars -h "$(grep "^##?" "$HOME_DIR/src/main.sh" | cut -c 5-)" : "$@")"
 
@@ -19,7 +19,12 @@ main() {
   export GPT_MODEL="$gpt_model_name"
 
   local -r pr_number=$(github::get_pr_number)
-  local -r commit_diff=$(github::get_commit_diff "$pr_number")
+  local -r commit_diff=$(github::get_commit_diff "$pr_number" "$files_to_ignore")
+
+  if [ -z "$commit_diff" ]; then
+    echo "Nothing in the commit diff."
+    exit
+  fi
 
   local -r gpt_response=$(gpt::prompt_model "$commit_diff")
 
