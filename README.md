@@ -1,6 +1,6 @@
 # Robin AI
 
-<img src="/assets/robin.png" alt="Robin watercolor image" style="width: 200px; height: 200px;"/>
+<img src="/assets/robin.png" alt="Robin watercolor image" style="width: 350px;"/>
 
 Named after Batman's assistant, Robin AI is an open source Github project that automatically reviews Github pull requests, providing a score (0-100), suggested improvements, and sample code for improvement.
 
@@ -10,7 +10,7 @@ Named after Batman's assistant, Robin AI is an open source Github project that a
 |---------------------|----------|---------------------------|-------------------------------------------------------------------------------------------------------------------|
 | `GITHUB_TOKEN`      | Yes      | Automatically supplied    | A Github access token with the `repo` and `pull_request` scopes.                                                  |
 | `OPEN_AI_API_KEY`   | Yes      | N/A                       | An API key from Open AI's developer portal.                                                                       |
-| `gpt_model_name`    | No       | `gpt-3.5-turbo-0301`      | The name of the GPT model to use for text generation.                                                             |
+| `gpt_model_name`    | No       | `gpt-3.5-turbo`      | The name of the GPT model to use for text generation.                                                             |
 | `github_api_url`    | No       | `https://api.github.com`  | The URL for the Github API endpoint. (Only relevant to enterprise customers.)                                               |
 
 ## Installation
