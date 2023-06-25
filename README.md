@@ -12,10 +12,10 @@ Named after Batman's assistant, Robin AI is an open source Github project that a
 | `OPEN_AI_API_KEY`   | Yes      | N/A                       | An API key from Open AI's developer portal.                                                                       |
 | `gpt_model_name`    | No       | `gpt-3.5-turbo`           | The name of the GPT model to use for text generation.                                                             |
 | `github_api_url`    | No       | `https://api.github.com`  | The URL for the Github API endpoint. (Only relevant to enterprise customers.)                                      |
-| `root_language`     | No       | `to infer`                | The primary coding language of the project.                                                                       |
-| `coding_principles` | No       | `readability, maintainability, single responsibility principle, DRY principle` | The main coding principles to uphold.       |
-| `ignored_principles`| No       | `code comments, heredoc comments, unused imports` | The coding principles to ignore.              |
-| `files_to_ignore`   | No       | ` ` (empty string)         | A whitespace delimited list of files to ignore.                                                                   |
+| `root_language`     | No       | to infer                | The primary coding language of the project.                                                                       |
+| `coding_principles` | No       | readability, maintainability, single responsibility principle, DRY principle` | The main coding principles to uphold.       |
+| `ignored_principles`| No       | code comments, heredoc comments, unused imports | The coding principles to ignore.              |
+| `files_to_ignore`   | No       |  (empty string)         | A whitespace delimited list of files to ignore.                                                                   |
                                           |
 
 ## Installation
