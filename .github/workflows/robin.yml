@@ -12,6 +12,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
+          root_language: "bash"
           files_to_ignore: |
             "README.md"
             "assets/*"
