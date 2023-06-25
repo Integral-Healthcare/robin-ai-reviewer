@@ -4,19 +4,6 @@
 
 Named after Batman's assistant, Robin AI is an open source Github project that automatically reviews Github pull requests, providing a score (0-100), suggested improvements, and sample code for improvement.
 
-## Arguments
-
-| Name                | Required | Default Value             | Description                                                                                                       |
-|---------------------|----------|---------------------------|-------------------------------------------------------------------------------------------------------------------|
-| `GITHUB_TOKEN`      | Yes      | Automatically supplied    | A Github access token with the `repo` and `pull_request` scopes.                                                  |
-| `OPEN_AI_API_KEY`   | Yes      | N/A                       | An API key from Open AI's developer portal.                                                                       |
-| `gpt_model_name`    | No       | `gpt-3.5-turbo`           | The name of the GPT model to use for text generation.                                                             |
-| `github_api_url`    | No       | `https://api.github.com`  | The URL for the Github API endpoint. (Only relevant to enterprise customers.)                                      |
-| `root_language`     | No       | to infer                | The primary coding language of the project.                                                                       |
-| `coding_principles` | No       | readability, maintainability, single responsibility principle, DRY principle | The main coding principles to uphold.       |
-| `ignored_principles`| No       | code comments, heredoc comments, unused imports | The coding principles to ignore.              |
-| `files_to_ignore`   | No       |  (empty string)         | A whitespace delimited list of files to ignore.                                                                   |
-
 ## Installation
 
 To use Robin AI in your Github project, you'll need to add it as a Github action. Here's how:
@@ -54,6 +41,19 @@ jobs:
 6. Create a secret in your Github repository called `OPEN_AI_API_KEY` and set it to the value of your Open AI API key.
 
 With those steps complete, Robin AI will automatically run every time a pull request is opened or edited in your Github repository.
+
+## Arguments
+
+| Name                | Required | Default Value             | Description                                                                                                       |
+|---------------------|----------|---------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `GITHUB_TOKEN`      | Yes      | Automatically supplied    | A Github access token with the `repo` and `pull_request` scopes.                                                  |
+| `OPEN_AI_API_KEY`   | Yes      | N/A                       | An API key from Open AI's developer portal.                                                                       |
+| `gpt_model_name`    | No       | `gpt-3.5-turbo`           | The name of the GPT model to use for text generation.                                                             |
+| `github_api_url`    | No       | `https://api.github.com`  | The URL for the Github API endpoint. (Only relevant to enterprise customers.)                                      |
+| `root_language`     | No       | to infer                | The primary coding language of the project.                                                                       |
+| `coding_principles` | No       | readability, maintainability, single responsibility principle, DRY principle | The main coding principles to uphold.       |
+| `ignored_principles`| No       | code comments, heredoc comments, unused imports | The coding principles to ignore.              |
+| `files_to_ignore`   | No       |  (empty string)         | A whitespace delimited list of files to ignore.                                                                   |
 
 ## OPEN_AI_API_KEY
 
