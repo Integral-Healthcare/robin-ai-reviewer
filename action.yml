@@ -15,6 +15,18 @@ inputs:
     description: 'URL to the API of your Github Server, only necessary for Github Enterprise customers'
     required: false
     default: 'https://api.github.com'
+  root_language:
+    description: 'The primary language of the repository'
+    required: false
+    default: 'to infer'
+  coding_principles:
+    description: 'The main points of feedback and code principles to maintain'
+    required: false
+    default: 'readability, maintainability, single responsibility principle, DRY principle'
+  ignored_principles:
+    description: 'Feedback to ignore or omit'
+    required: false
+    default: 'code comments, heredoc comments, unused imports'
   files_to_ignore:
     description: 'Whitespace separated list of files to ignore'
     required: false
@@ -27,6 +39,9 @@ runs:
     - --open_ai_api_key=${{ inputs.OPEN_AI_API_KEY }}
     - --gpt_model_name=${{ inputs.gpt_model_name }}
     - --github_api_url=${{ inputs.github_api_url }}
+    - --root_language=${{ inputs.root_language }}
+    - --coding_principles=${{ inputs.coding_principles }}
+    - --ignored_principles=${{ inputs.ignored_principles }}
     - --files_to_ignore=${{ inputs.files_to_ignore }}
 branding:
   icon: 'tag'
