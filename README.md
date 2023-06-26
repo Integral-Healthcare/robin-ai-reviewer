@@ -47,7 +47,7 @@ With those steps complete, Robin AI will automatically run every time a pull req
 | Name                | Required | Default Value             | Description                                                                                                       |
 |---------------------|----------|---------------------------|-------------------------------------------------------------------------------------------------------------------|
 | `GITHUB_TOKEN`      | Yes      | Automatically supplied    | A Github access token with the `repo` and `pull_request` scopes.                                                  |
-| `OPEN_AI_API_KEY`   | Yes      | N/A                       | An API key from Open AI's developer portal.                                                                       |
+| `OPEN_AI_API_KEY`   | Yes      | N/A                       | An API key from Open AI's [developer portal](https://platform.openai.com/account/api-keys).                                                                       |
 | `gpt_model_name`    | No       | `gpt-3.5-turbo`           | The name of the GPT model to use for text generation.                                                             |
 | `github_api_url`    | No       | `https://api.github.com`  | The URL for the Github API endpoint. (Only relevant to enterprise customers.)                                      |
 | `root_language`     | No       | to infer                | The primary coding language of the project.                                                                       |
