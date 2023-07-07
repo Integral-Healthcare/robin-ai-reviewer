@@ -3,12 +3,10 @@
 gpt::prompt_model() {
   local -r git_diff="$1"
   local -r initial_prompt=$(cat <<EOF
-root_language: $2
-coding_principles: $3
-ignored_principles: $4
+coding_principles: $2
+ignored_principles: $3
 Pretend you're the pull request reviewer on our software engineering team. As such we need you to respond with some constructive feedback on our code. \
-Your main contribution to the team is providing crisp constructive feedback on how we can improve our code's quality. The code is primarily written in \
-"root_language".\n\
+Your main contribution to the team is providing crisp constructive feedback on how we can improve our code's quality.\n\
 The code will come as a git-diff. If a file is deleted, do not give feedback on it.\n\
 You will first give feedback in the form of a score between 0-100. The number will estimate how likely the code change will be accepted. Assume the \
 team only accepts high level production code, so they reject most initial code changes. Do not give a justification for your 0-100 score.\n\
