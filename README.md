@@ -18,7 +18,11 @@ name: Robin AI Reviewer
 
 on:
   pull_request:
-    types: [ready_for_review]
+    branches: [main]
+    types:
+      - opened
+      - reopened
+      - ready_for_review
 
 jobs:
   build:

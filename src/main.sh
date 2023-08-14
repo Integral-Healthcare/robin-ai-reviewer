@@ -7,7 +7,7 @@ source "$HOME_DIR/src/gpt.sh"
 ##? Auto-reviews a Pull Request
 ##?
 ##? Usage:
-##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --github_api_url=<url> --coding_principles=<text> --ignored_principles=<text> --files_to_ignore=<files>
+##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --github_api_url=<url> --files_to_ignore=<files>
 main() {
   eval "$(/root/bin/docpars -h "$(grep "^##?" "$HOME_DIR/src/main.sh" | cut -c 5-)" : "$@")"
 
@@ -26,7 +26,7 @@ main() {
     exit
   fi
 
-  local -r gpt_response=$(gpt::prompt_model "$commit_diff" "$coding_principles" "$ignored_principles" )
+  local -r gpt_response=$(gpt::prompt_model "$commit_diff")
 
   if [ -z "$gpt_response" ]; then
     echoerr "GPT's response was NULL. Double check your API key and billing details."
