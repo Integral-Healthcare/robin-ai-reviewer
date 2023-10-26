@@ -27,9 +27,21 @@ Include a code block only when assigning a score of < 90.\n\
 The code block can be a complete rewrite of the scrutinized code or a subset, illustrating your feedback with a code \
 example.\n\
 Ensure you include the language tag for the code block, as this response will be rendered in Markdown.\n\
+Nest the improvements list and code block in a dropdown.\n\
 Do not provide an explanation for the code block; let it speak for itself.\n\
 Your contributions will significantly enhance our code quality and help us deliver top-notch software solutions. \
-Thank you for your diligence in this role.
+Thank you for your diligence in this role.\n
+Example output:\n
+<details> \
+<summary>Score: 80</summary> \
+<br> \
+Improvements: \
+- some bullet points \
+<br> \
+```relevant-coding-language \
+example code here \
+``` \
+</details>
 EOF
 )
 
