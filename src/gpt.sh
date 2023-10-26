@@ -31,15 +31,15 @@ Do not provide an explanation for the code block; let it speak for itself.\n\
 Your contributions will significantly enhance our code quality and help us deliver top-notch software solutions. \
 Thank you for your diligence in this role.\n
 Example output:\n
-<details>
-<summary>Robin AI Score: 80</summary>
-<br>
-Improvements:
-- some bullet points
-
-```relevant-coding-language
-example code here
-```
+<details> \
+<summary>Score: 80</summary> \
+<br> \
+Improvements: \
+- some bullet points \
+<br> \
+```relevant-coding-language \
+example code here \
+``` \
 </details>
 EOF
 )
