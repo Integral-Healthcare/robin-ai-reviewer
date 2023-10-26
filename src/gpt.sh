@@ -32,7 +32,7 @@ Your contributions will significantly enhance our code quality and help us deliv
 Thank you for your diligence in this role.\n
 Example output:\n
 <details>
-<summary>Score: 80</summary>
+<summary>Robin AI Score: 80</summary>
 <br>
 Improvements:
 - some bullet points
