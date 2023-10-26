@@ -33,11 +33,12 @@ Thank you for your diligence in this role.\n
 Example output:\n
 <details>
 <summary>Score: 80</summary>
+<br>
 Improvements:
 - some bullet points
 
-```python
-some code here
+```relevant-coding-language
+example code here
 ```
 </details>
 EOF
