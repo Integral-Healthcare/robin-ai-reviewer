@@ -58,7 +58,7 @@ With those steps complete, Robin AI will automatically run every time a pull req
 
 ## OPEN_AI_API_KEY
 
-You'll have to navigate to [OpenAI's developer portal](https://platform.openai.com/account/api-keys) to generate an API key. Further, you'll have to put a card on file before the API key will become active. You can see the [pricing details here](https://openai.com/pricing), but for the default `gpt-3.5-turbo` model, pricing is `$0.002 / 1K tokens`, which translates to < $5 / month even for organizations making daily pull requests.
+You'll have to navigate to [OpenAI's developer portal](https://platform.openai.com/account/api-keys) to generate an API key. Further, you'll have to put a card on file before the API key will become active. You can see the [pricing details here](https://openai.com/pricing), but for the default `gpt-3.5-turbo` model, pricing is `$0.0015 / 1K tokens`, which translates to < $2 / month even for organizations making daily pull requests.
 
 ## Usage
 
