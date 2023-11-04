@@ -12,9 +12,11 @@ export HOME_DIR
 source "$HOME_DIR/src/main.sh"
 
 for a in "${@}"; do
-  arg=$(echo "$a" | tr '\n' ' ' | xargs echo | sed "s/'//g"| sed "s/’//g")
+  arg=$(echo "$a" | tr '\n' ' ' | xargs -0 echo | sed "s/'//g"| sed "s/’//g")
   sanitizedArgs+=("$arg")
 done
+
+echo "${sanitizedArgs[@]}"
 
 main "${sanitizedArgs[@]}"
 

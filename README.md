@@ -6,6 +6,8 @@ Named after Batman's assistant, Robin AI is an open source Github project that a
 
 ## Installation
 
+### Github
+
 To use Robin AI in your Github project, you'll need to add it as a Github action. Here's how:
 
 1. In your Github repository, navigate to the "Actions" tab.
@@ -46,15 +48,42 @@ jobs:
 
 With those steps complete, Robin AI will automatically run every time a pull request is opened or edited in your Github repository.
 
+### Gitlab
+
+To use Robin AI in your Gitlab project, you'll need to create `GITLAB_TOKEN` and `OPEN_AI_API_KEY` CI variables and create CI job. Here's how:
+
+1. In your Gitlab repository, open `Settings` -> `CI/CD` -> `Variables` and add `GITLAB_TOKEN` and `OPEN_AI_API_KEY` variables.
+2. In your repository, create or open `.gitlab-ci.yml` file.
+3. Copy and paste the following code into the file:
+
+```yml
+robin:ai:review:
+  image:
+    name: ghcr.io/Integral-Healthcare/robin-ai-reviewer
+    entrypoint: [""]
+  stage: review
+  script:
+    - >
+      ./entrypoint.sh \
+        --git_provider=gitlab \
+        --git_token=$GITLAB_TOKEN \
+        --open_ai_api_key=$OPEN_AI_API_KEY
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+```
+
+_Note: make sure that you have `review` stage defined in your pipeline_
+
 ## Arguments
 
-| Name                | Required | Default Value             | Description                                                                                                       |
-|---------------------|----------|---------------------------|-------------------------------------------------------------------------------------------------------------------|
-| `GITHUB_TOKEN`      | Yes      | Automatically supplied    | A Github access token with the `repo` and `pull_request` scopes.                                                  |
-| `OPEN_AI_API_KEY`   | Yes      | N/A                       | An API key from Open AI's [developer portal](https://platform.openai.com/account/api-keys).                                                                       |
-| `gpt_model_name`    | No       | `gpt-3.5-turbo`           | The name of the GPT model to use for text generation.                                                             |
-| `github_api_url`    | No       | `https://api.github.com`  | The URL for the Github API endpoint. (Only relevant to enterprise customers.)                                      |
-| `files_to_ignore`   | No       |  (empty string)         | A whitespace delimited list of files to ignore.                                                                   |
+| Name | Required | Default Value | Description |
+|--|--|--|--|
+| `open_ai_api_key` | Yes | N/A | An API key from Open AI's [developer portal](https://platform.openai.com/account/api-keys). |
+| `git_provider` | No | Automatically supplied when used as a workflow | The name of the Git provider to use. Available options are `github` and `gitlab`. |
+| `git_token` | No | Automatically supplied when used as a workflow | A Github access token with the `repo` and `pull_request` scopes or a Gitlab access token with the `api` scope. |
+| `gpt_model_name` | No  | `gpt-3.5-turbo` | The name of the GPT model to use for text generation. |
+| `github_api_url` | No  | `https://api.github.com` | The URL for the Github API endpoint. Only relevant to enterprise customers.  |
+| `files_to_ignore` | No  | "" | A whitespace delimited list of files to ignore. |
 
 ## OPEN_AI_API_KEY
 
@@ -67,12 +96,12 @@ When Robin AI runs, it will post a comment on the pull request with its score ou
 ## Performance
 Great emphasis has been put on ensuring a performant runtime.
 
-| Metric         | Value     |
-|----------------|-----------|
-| Docker Image Size  | 18.5MB   |
+| Metric | Value |
+|--|--|
+| Docker Image Size | 15.6MB |
 | Average Action Runtime | 14s |
 
-The Docker image for Robin AI has a size of 18.5MB, which is relatively small and should be quick to download and use. On average, the Robin AI Github action runtime is 14 seconds, which means that it should be able to process pull requests quickly and efficiently. These metrics may vary depending on factors such as the size and complexity of the code being reviewed, the speed of the internet connection, and the availability of Open AI's API.
+The Docker image for Robin AI has a size of 15.6MB, which is relatively small and should be quick to download and use. On average, the Robin AI Github action runtime is 14 seconds, which means that it should be able to process pull requests quickly and efficiently. These metrics may vary depending on factors such as the size and complexity of the code being reviewed, the speed of the internet connection, and the availability of Open AI's API.
 
 ## Demo
 
