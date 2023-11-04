@@ -16,8 +16,6 @@ for a in "${@}"; do
   sanitizedArgs+=("$arg")
 done
 
-echo "${sanitizedArgs[@]}"
-
 main "${sanitizedArgs[@]}"
 
 exit $?
