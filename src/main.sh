@@ -25,15 +25,14 @@ main() {
   local -r commit_diff=$(github::get_commit_diff "$pr_number" "$files_to_ignore")
 
   if [ -z "$commit_diff" ]; then
-    echo "Nothing in the commit diff."
+    utils::log_info "Nothing in the commit diff."
     exit
   fi
 
   local -r gpt_response=$(gpt::prompt_model "$commit_diff")
 
   if [ -z "$gpt_response" ]; then
-    echoerr "GPT's response was NULL. Double check your API key and billing details."
-    exit 1
+    utils::log_error "GPT's response was NULL. Double check your API key and billing details."
   fi
 
   github::comment "$gpt_response" "$pr_number"
