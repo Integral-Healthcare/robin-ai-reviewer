@@ -69,10 +69,10 @@ Great emphasis has been put on ensuring a performant runtime.
 
 | Metric         | Value     |
 |----------------|-----------|
-| Docker Image Size  | 18.5MB   |
+| Docker Image Size  | 15.6MB   |
 | Average Action Runtime | 14s |
 
-The Docker image for Robin AI has a size of 18.5MB, which is relatively small and should be quick to download and use. On average, the Robin AI Github action runtime is 14 seconds, which means that it should be able to process pull requests quickly and efficiently. These metrics may vary depending on factors such as the size and complexity of the code being reviewed, the speed of the internet connection, and the availability of Open AI's API.
+The Docker image for Robin AI has a size of 15.6MB, which is relatively small and should be quick to download and use. On average, the Robin AI Github action runtime is 14 seconds, which means that it should be able to process pull requests quickly and efficiently. These metrics may vary depending on factors such as the size and complexity of the code being reviewed, the speed of the internet connection, and the availability of Open AI's API.
 
 ## Demo
 

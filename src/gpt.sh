@@ -36,32 +36,33 @@ Example output:\n
 <summary>Score: 80</summary> \
 <br> \
 Improvements: \
-- some bullet points \
-<br> \
-```relevant-coding-language \
+<ul> \
+<li> some bullet points </li> \
+</ul> \r\n\r\n
+\`\`\`relevant-coding-language \
 example code here \
-``` \
+\`\`\` \
 </details>
 EOF
 )
 
 gpt::prompt_model() {
-  local -r git_diff="$1"
+  local -r git_diff="${1}"
 
-  local -r body=$(curl -sSL \
+  local -r response=$(curl -sSL \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $OPEN_AI_API_KEY" \
     -d "$(jq -n --arg model "$GPT_MODEL" --arg prompt "$INITIAL_PROMPT" --arg git_diff "$git_diff" '{model: $model, messages: [{role: "user", content: $prompt}, {role: "user", content: $git_diff}]}')" \
     "https://api.openai.com/v1/chat/completions")
 
-  local -r error=$(echo "$body" | jq -r '.error')
+  local -r error=$(echo "$response" | jq -r '.error')
 
   if [[ "$error" != "null" ]]; then
-    echoerr "API request failed: $error"
-    exit 1
+    kill -s TERM $TOP_PID
+    utils::log_error "API request to 'api.openai.com' failed: $error"
   fi
 
-  local -r response=$(echo "$body" | jq -r '.choices[0].message.content')
+  local -r body=$(echo "$response" | jq -r '.choices[0].message.content')
 
-  echo "$response"
+  echo "$body"
 }

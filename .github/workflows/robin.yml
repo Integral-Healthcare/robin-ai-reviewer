@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Review the open PR
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
