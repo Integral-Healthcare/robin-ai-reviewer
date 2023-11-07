@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+trap "exit 1" TERM
+export TOP_PID=$$
+
 source "$HOME_DIR/src/utils.sh"
 source "$HOME_DIR/src/github.sh"
 source "$HOME_DIR/src/gpt.sh"
@@ -9,7 +12,7 @@ source "$HOME_DIR/src/gpt.sh"
 ##? Usage:
 ##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --github_api_url=<url> --files_to_ignore=<files>
 main() {
-  eval "$(/root/bin/docpars -h "$(grep "^##?" "$HOME_DIR/src/main.sh" | cut -c 5-)" : "$@")"
+  eval "$(docpars -h "$(grep "^##?" "$HOME_DIR/src/main.sh" | cut -c 5-)" : "$@")"
 
   utils::verify_required_env_vars
 
