@@ -8,6 +8,8 @@ Named after Batman's assistant, Robin AI is an open source Github project that a
 
 To use Robin AI in your Github project, you'll need to add it as a Github action. Here's how:
 
+Inserting a new line of text here for testing.
+
 1. In your Github repository, navigate to the "Actions" tab.
 2. Click on the "New workflow" button.
 3. Select the option to "Set up a workflow yourself".

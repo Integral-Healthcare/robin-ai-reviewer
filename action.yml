@@ -19,6 +19,7 @@ inputs:
     description: 'Whitespace separated list of files to ignore'
     required: false
     default: ''
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -28,6 +29,7 @@ runs:
     - --gpt_model_name=${{ inputs.gpt_model_name }}
     - --github_api_url=${{ inputs.github_api_url }}
     - --files_to_ignore=${{ inputs.files_to_ignore }}
+
 branding:
   icon: 'tag'
   color: 'purple'
