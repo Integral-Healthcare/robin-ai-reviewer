@@ -22,7 +22,7 @@ main() {
   export GPT_MODEL="$gpt_model_name"
 
   local -r pr_number=$(github::get_pr_number)
-  local -r commit_diff=$(github::get_commit_diff "$pr_number" "$files_to_ignore")
+  local -r commit_diff=$(github::get_commit_diff "$pr_number" "${files_to_ignore[*]}")
 
   if [ -z "$commit_diff" ]; then
     utils::log_info "Nothing in the commit diff."
