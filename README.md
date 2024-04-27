@@ -1,6 +1,10 @@
-# Robin AI
+<div align="center">
+  <h1>Robin AI</h1>
+  <img src="/assets/robin.png" alt="Robin watercolor image" style="width: 350px;"/>
+</div>
 
-<img src="/assets/robin.png" alt="Robin watercolor image" style="width: 350px;"/>
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Integral-Healthcare/robin-ai-reviewer)](https://github.com/Integral-Healthcare/robin-ai-reviewer/releases)
+[![GitHub org](https://img.shields.io/badge/org-Integral--Healthcare-blue)](https://github.com/Integral-Healthcare)
 
 Named after Batman's assistant, Robin AI is an open source Github project that automatically reviews Github pull requests, providing a score (0-100), suggested improvements, and sample code for improvement.
 
