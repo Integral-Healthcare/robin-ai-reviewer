@@ -25,7 +25,12 @@ github::get_commit_diff() {
       }
 
       filename=$(_jq '.filename')
+      status=$(_jq '.status')
       ignore=false
+
+      if [ "$status" == "removed" ]; then
+        continue
+      fi
 
       for pattern in $files_to_ignore; do
         if [[ $filename == $pattern ]]; then
