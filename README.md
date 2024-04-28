@@ -6,6 +6,7 @@
   <a href="https://github.com/Integral-Healthcare">
     <img src="https://img.shields.io/badge/org-Integral--Healthcare-blue" alt="GitHub org">
   </a>
+  <br>
   <img src="/assets/robin.png" alt="Robin watercolor image" style="width: 350px;"/>
 </div>
 
