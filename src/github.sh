@@ -40,6 +40,7 @@ github::should_ignore_file() {
   local -r files_to_ignore="$2"
 
   for pattern in $files_to_ignore; do
+    # shellcheck disable=SC2053
     [[ "$filename" == $pattern ]] && return 0
   done
 

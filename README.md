@@ -70,7 +70,7 @@ You'll have to navigate to [OpenAI's developer portal](https://platform.openai.c
 
 ## Usage
 
-When Robin AI runs, it will post a comment on the pull request with its score out of 100, suggested improvements, and sample code for improvement. You can use this information to improve the quality of your code and make your pull requests more likely to be accepted. 
+When Robin AI runs, it will post a comment on the pull request with its score out of 100, suggested improvements, and sample code for improvement. You can use this information to improve the quality of your code and make your pull requests more likely to be accepted.
 
 ## Performance
 Great emphasis has been put on ensuring a performant runtime.

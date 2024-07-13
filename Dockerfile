@@ -10,7 +10,7 @@ RUN apk add --no-cache wget && \
 
 FROM alpine:3.18 as final
 
-COPY --from=docpars /docpars /usr/local/bin/docpars 
+COPY --from=docpars /docpars /usr/local/bin/docpars
 
 RUN apk add --no-cache bash curl jq
 
