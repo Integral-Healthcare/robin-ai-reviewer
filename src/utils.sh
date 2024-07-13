@@ -1,25 +1,37 @@
 #!/usr/bin/env bash
 
+# ANSI color codes
+readonly RED='\e[1;91m'
+readonly BLUE='\e[1;94m'
+readonly RESET='\e[0m'
+
 utils::log_info() {
-  echo -e "[\\e[1;94mINFO\\e[0m] $@"
+  printf "[${BLUE}INFO${RESET}] %s\n" "$*"
 }
 
 utils::log_error() {
-  echo -e "[\\e[1;91mERROR\\e[0m] $@" 1>&2
+  printf "[${RED}ERROR${RESET}] %s\n" "$*" >&2
   exit 1
 }
 
 utils::verify_required_env_vars() {
-  utils::env_variable_exist "GITHUB_REPOSITORY"
-  utils::env_variable_exist "GITHUB_EVENT_PATH"
-  utils::env_variable_exist "github_token"
-  utils::env_variable_exist "github_api_url"
-  utils::env_variable_exist "open_ai_api_key"
-  utils::env_variable_exist "gpt_model_name"
+  local required_vars=(
+    "GITHUB_REPOSITORY"
+    "GITHUB_EVENT_PATH"
+    "github_token"
+    "github_api_url"
+    "open_ai_api_key"
+    "gpt_model_name"
+  )
+
+  for var in "${required_vars[@]}"; do
+    utils::env_variable_exist "$var"
+  done
 }
 
 utils::env_variable_exist() {
-  if [[ -z "${!1}" ]]; then
-    utils::log_error "The env variable '$1' is required."
+  local var_name="$1"
+  if [[ -z "${!var_name}" ]]; then
+    utils::log_error "The env variable '$var_name' is required."
   fi
 }
