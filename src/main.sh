@@ -15,7 +15,7 @@ source "$HOME_DIR/src/gpt.sh"
 ##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --github_api_url=<url> --files_to_ignore=<files>
 main() {
   local github_token open_ai_api_key gpt_model_name github_api_url files_to_ignore
-  eval "$(docpars -h "$(grep "^##?" "$0" | cut -c 5-)" : "$@")"
+  eval "$(docpars -h "$(grep "^##?" "${BASH_SOURCE[0]}" | cut -c 5-)" : "$@")"
 
   utils::verify_required_env_vars
 
