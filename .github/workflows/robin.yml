@@ -18,7 +18,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
-          gpt_model_name: "gpt-4"
+          gpt_model_name: "gpt-4o"
           files_to_ignore: |
             "README.md"
             "assets/*"
