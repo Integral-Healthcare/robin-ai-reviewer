@@ -1,68 +1,68 @@
 #!/usr/bin/env bash
 
-INITIAL_PROMPT=$(
-  cat <<EOF
-I'm designating you as a Pull Request Code Reviewer within our engineering team. Your primary responsibility is to \
-provide constructive feedback on code changes to enhance code quality, maintainability, and readability, among other \
-aspects.\n\
-Here are your guidelines:\n\
-Review Process:\n\
-Review code changes provided as a Git diff.\n\
-If a file is deleted, do not provide feedback.\n\
-You may ignore configuration files, README files, package.json, and any non-code files.\n\
-If all files in the Git diff are non-code files, respond with "nothing to grade" and disregard the remaining \
-instructions.\n\
-Scoring:\n\
-Give a score between 0-100 to estimate the likelihood of code change acceptance.\n\
-Assume the CTO is stringent and accepts high-quality production code; hence, most initial changes are rejected.\n\
-Do not provide a justification for your score in the 0-100 range.\n\
-Feedback:\n\
-Offer a brief list of potential improvements. These can include better variable naming, function simplification, \
-improved handling of edge cases, performance optimizations, removal of unused code, adherence to the single \
-responsibility and DRY principles, and more.\n\
-Avoid feedback on comments via heredocs. Our preference is self-documenting code, so comment feedback is only \
-necessary in special cases.\n\
-Code Block:\n\
-Include a code block only when assigning a score of < 90.\n\
-The code block can be a complete rewrite of the scrutinized code or a subset, illustrating your feedback with a code \
-example.\n\
-Ensure you include the language tag for the code block, as this response will be rendered in Markdown.\n\
-Nest the improvements list and code block in a dropdown.\n\
-Do not provide an explanation for the code block; let it speak for itself.\n\
-Your contributions will significantly enhance our code quality and help us deliver top-notch software solutions. \
-Thank you for your diligence in this role.\n
-Example output:\n
-<details> \
-<summary>Score: 80</summary> \
-<br> \
-Improvements: \
-<ul> \
-<li> some bullet points </li> \
-</ul> \r\n\r\n
-\`\`\`relevant-coding-language \
-example code here \
-\`\`\` \
+INITIAL_PROMPT=$(cat <<EOF
+You are a Pull Request Code Reviewer in our engineering team. Your task is to provide constructive feedback on code changes to improve quality, maintainability, and readability.
+
+Guidelines:
+1. Review the provided Git diff.
+2. Ignore deleted files, configuration files, README files, package.json, and non-code files.
+3. If all files are non-code, respond with "nothing to grade" and stop.
+
+Scoring:
+- Assign a score from 0-100 based on code quality and acceptability.
+- Assume high standards for production code.
+
+Feedback:
+- Provide a concise list of potential improvements (e.g., naming, simplification, edge cases, optimization, unused code removal, SOLID principles).
+- Focus on code improvements rather than comments.
+
+Output Format:
+<details>
+<summary>Score: [0-100]</summary>
+
+Improvements:
+- [Bullet point 1]
+- [Bullet point 2]
+- ...
+
+\`\`\`[language]
+[Example code block if score < 90]
+\`\`\`
 </details>
+
+Note: Include the code block only for scores below 90.
 EOF
 )
 
 gpt::prompt_model() {
-  local -r git_diff="${1}"
+  local -r git_diff="$1"
+  local -r api_url="https://api.openai.com/v1/chat/completions"
 
-  local -r response=$(curl -sSL \
+  local response
+  response=$(curl -sSL \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $OPEN_AI_API_KEY" \
-    -d "$(jq -n --arg model "$GPT_MODEL" --arg prompt "$INITIAL_PROMPT" --arg git_diff "$git_diff" '{model: $model, messages: [{role: "user", content: $prompt}, {role: "user", content: $git_diff}]}')" \
-    "https://api.openai.com/v1/chat/completions")
+    -d "$(jq -n \
+      --arg model "$GPT_MODEL" \
+      --arg prompt "$INITIAL_PROMPT" \
+      --arg git_diff "$git_diff" \
+      '{
+        model: $model,
+        messages: [
+          {role: "user", content: $prompt},
+          {role: "user", content: $git_diff}
+        ]
+      }'
+    )" \
+    "$api_url")
 
-  local -r error=$(echo "$response" | jq -r '.error')
+  local error
+  error=$(jq -r '.error' <<< "$response")
 
   if [[ "$error" != "null" ]]; then
-    kill -s TERM $TOP_PID
     utils::log_error "API request to 'api.openai.com' failed: $error"
+    return 1
   fi
 
-  local -r body=$(echo "$response" | jq -r '.choices[0].message.content')
-
-  echo "$body"
+  jq -r '.choices[0].message.content' <<< "$response"
 }
