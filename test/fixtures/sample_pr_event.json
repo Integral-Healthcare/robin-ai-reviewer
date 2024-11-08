@@ -1,0 +1,25 @@
+{
+  "action": "opened",
+  "pull_request": {
+    "number": 1,
+    "title": "Test PR for Development",
+    "body": "This is a test pull request for local development.",
+    "head": {
+      "sha": "test-sha-123",
+      "ref": "feature-branch"
+    },
+    "base": {
+      "ref": "main"
+    },
+    "user": {
+      "login": "test-user"
+    }
+  },
+  "repository": {
+    "full_name": "Integral-Healthcare/robin-ai-reviewer",
+    "name": "robin-ai-reviewer",
+    "owner": {
+      "login": "Integral-Healthcare"
+    }
+  }
+}

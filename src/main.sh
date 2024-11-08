@@ -14,8 +14,8 @@ source "$HOME_DIR/src/gpt.sh"
 ##? Usage:
 ##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --github_api_url=<url> --files_to_ignore=<files>
 main() {
-  local github_token open_ai_api_key gpt_model_name github_api_url files_to_ignore
-  eval "$(docpars -h "$(grep "^##?" "${BASH_SOURCE[0]}" | cut -c 5-)" : "$@")"
+  local github_token="" open_ai_api_key="" gpt_model_name="gpt-3.5-turbo" github_api_url="https://api.github.com" files_to_ignore=""
+  utils::parse_args "$@"
 
   utils::verify_required_env_vars
 
@@ -37,7 +37,7 @@ main() {
 
   if [[ -z "$gpt_response" ]]; then
     utils::log_error "GPT's response was empty. Double check your API key and billing details."
-    exit 1
+    # utils::log_error already calls exit 1, so we don't need it here
   fi
 
   github::comment "$gpt_response" "$pr_number"

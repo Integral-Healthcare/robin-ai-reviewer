@@ -35,3 +35,37 @@ utils::env_variable_exist() {
     utils::log_error "The env variable '$var_name' is required."
   fi
 }
+
+utils::parse_args() {
+  # Declare variables as local to avoid shellcheck warnings
+  local arg
+  # Export variables so they're available in the main function
+  while [[ $# -gt 0 ]]; do
+    arg="$1"
+    case "$arg" in
+      --github_token=*)
+        export github_token="${arg#*=}"
+        shift
+        ;;
+      --open_ai_api_key=*)
+        export open_ai_api_key="${arg#*=}"
+        shift
+        ;;
+      --gpt_model_name=*)
+        export gpt_model_name="${arg#*=}"
+        shift
+        ;;
+      --github_api_url=*)
+        export github_api_url="${arg#*=}"
+        shift
+        ;;
+      --files_to_ignore=*)
+        export files_to_ignore="${arg#*=}"
+        shift
+        ;;
+      *)
+        utils::log_error "Unknown argument: $arg"
+        ;;
+    esac
+  done
+}
