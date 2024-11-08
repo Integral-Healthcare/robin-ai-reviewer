@@ -1,0 +1,10 @@
+{
+    "pull_request": {
+        "number": 123,
+        "title": "Test PR",
+        "body": "Test PR description"
+    },
+    "repository": {
+        "full_name": "test/repo"
+    }
+}
