@@ -60,13 +60,13 @@ With those steps complete, Robin AI will automatically run every time a pull req
 |---------------------|----------|---------------------------|-------------------------------------------------------------------------------------------------------------------|
 | `GITHUB_TOKEN`      | Yes      | Automatically supplied    | A Github access token with the `repo` and `pull_request` scopes.                                                  |
 | `OPEN_AI_API_KEY`   | Yes      | N/A                       | An API key from Open AI's [developer portal](https://platform.openai.com/account/api-keys).                                                                       |
-| `gpt_model_name`    | No       | `gpt-3.5-turbo`           | The name of the GPT model to use for text generation.                                                             |
+| `gpt_model_name`    | No       | `gpt-4-turbo`           | The name of the GPT model to use for text generation.                                                             |
 | `github_api_url`    | No       | `https://api.github.com`  | The URL for the Github API endpoint. (Only relevant to enterprise customers.)                                      |
 | `files_to_ignore`   | No       |  (empty string)         | A whitespace delimited list of files to ignore.                                                                   |
 
 ## OPEN_AI_API_KEY
 
-You'll have to navigate to [OpenAI's developer portal](https://platform.openai.com/account/api-keys) to generate an API key. Further, you'll have to put a card on file before the API key will become active. You can see the [pricing details here](https://openai.com/pricing), but for the default `gpt-3.5-turbo` model, pricing is `$0.0015 / 1K tokens`, which translates to < $2 / month even for organizations making daily pull requests.
+You'll have to navigate to [OpenAI's developer portal](https://platform.openai.com/account/api-keys) to generate an API key. Further, you'll have to put a card on file before the API key will become active. You can see the [pricing details here](https://openai.com/api/pricing/), but for the default `gpt-4-turbo` model, pricing is `$0.0015 / 1K tokens`, which translates to < $2 / month even for organizations making daily pull requests.
 
 ## Usage
 
