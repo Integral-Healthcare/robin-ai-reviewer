@@ -29,7 +29,6 @@ Named after Batman's assistant, Robin AI is an open source Github action that au
 ## Prerequisites
 - A GitHub repository with pull request workflows
 - An OpenAI API key ([Get one here](https://platform.openai.com/account/api-keys))
-- Basic familiarity with GitHub Actions
 
 ## Installation
 1. In your Github repository, navigate to the "Actions" tab
