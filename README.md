@@ -10,7 +10,7 @@
   <img src="/assets/robin.png" alt="Robin watercolor image" style="width: 350px;"/>
 </div>
 
-Named after Batman's assistant, Robin AI is an open source Github action that automatically reviews pull requests using GPT-4. It analyzes your code changes and provides:
+Named after Batman's assistant, Robin AI is an open source Github action that automatically reviews pull requests using AI models from OpenAI (GPT) or Anthropic (Claude). It analyzes your code changes and provides:
 - A quality score (0-100)
 - Actionable improvement suggestions
 - Sample code snippets for better implementation
@@ -28,14 +28,79 @@ Named after Batman's assistant, Robin AI is an open source Github action that au
 
 ## Prerequisites
 - A GitHub repository with pull request workflows
-- An OpenAI API key ([Get one here](https://platform.openai.com/account/api-keys))
+- An API key for your chosen AI provider:
+  - **OpenAI**: [Get an API key here](https://platform.openai.com/account/api-keys)
+  - **Claude (Anthropic)**: [Get an API key here](https://console.anthropic.com/)
 
 ## Installation
 1. In your Github repository, navigate to the "Actions" tab
 2. Click "New workflow"
 3. Choose "Set up a workflow yourself"
-4. Create a new file (e.g., `robin.yml`) with this configuration:
+4. Create a new file (e.g., `robin.yml`) with one of these configurations:
 
+### Using OpenAI (Default)
+```yml
+name: Robin AI Reviewer
+
+on:
+  pull_request:
+    branches: [main]
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Robin AI Reviewer
+        uses: Integral-Healthcare/robin-ai-reviewer@v[INSERT_LATEST_RELEASE]
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AI_PROVIDER: openai
+          AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
+          AI_MODEL: o4-mini
+          files_to_ignore: |
+            "README.md"
+            "assets/*"
+            "package-lock.json"
+```
+
+### Using Claude (Anthropic)
+```yml
+name: Robin AI Reviewer
+
+on:
+  pull_request:
+    branches: [main]
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Robin AI Reviewer
+        uses: Integral-Healthcare/robin-ai-reviewer@v[INSERT_LATEST_RELEASE]
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AI_PROVIDER: claude
+          AI_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+          AI_MODEL: claude-3-sonnet-20240229
+          files_to_ignore: |
+            "README.md"
+            "assets/*"
+            "package-lock.json"
+```
+
+### Legacy Configuration (Still Supported)
 ```yml
 name: Robin AI Reviewer
 
@@ -58,26 +123,36 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
+          gpt_model_name: o4-mini
           files_to_ignore: |
             "README.md"
             "assets/*"
             "package-lock.json"
 ```
 
-5. Add your OpenAI API key:
+5. Add your API key as a repository secret:
    - Go to repository Settings → Secrets and Variables → Actions
-   - Create a new secret named `OPEN_AI_API_KEY`
-   - Paste your OpenAI API key as the value
+   - For OpenAI: Create a secret named `OPEN_AI_API_KEY`
+   - For Claude: Create a secret named `CLAUDE_API_KEY`
+   - Paste your API key as the value
 
 ## Configuration
 
+### Parameters (Recommended)
 | Name | Required | Default | Description |
 |------|----------|---------|-------------|
 | `GITHUB_TOKEN` | Yes | Auto-supplied | GitHub token for API access |
-| `OPEN_AI_API_KEY` | Yes | N/A | OpenAI API key |
-| `gpt_model_name` | No | `gpt-4-turbo` | GPT model to use |
+| `AI_PROVIDER` | No | `openai` | AI provider to use (`openai` or `claude`) |
+| `AI_API_KEY` | Yes | N/A | API key for the selected AI provider |
+| `AI_MODEL` | No | Provider-specific | AI model to use (see supported models below) |
 | `github_api_url` | No | `https://api.github.com` | GitHub API URL (for enterprise) |
 | `files_to_ignore` | No | (empty) | Files to exclude from review |
+
+### Legacy Parameters (Deprecated but still supported)
+| Name | Required | Default | Description |
+|------|----------|---------|-------------|
+| `OPEN_AI_API_KEY` | No | N/A | [DEPRECATED] Use `AI_API_KEY` instead |
+| `gpt_model_name` | No | N/A | [DEPRECATED] Use `AI_MODEL` instead |
 
 ## Usage
 

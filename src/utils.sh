@@ -20,9 +20,12 @@ utils::verify_required_env_vars() {
     "GITHUB_EVENT_PATH"
     "github_token"
     "github_api_url"
-    "open_ai_api_key"
-    "gpt_model_name"
   )
+
+  # Check for AI API key (new or legacy)
+  if [[ -z "${ai_api_key:-}" && -z "${open_ai_api_key:-}" ]]; then
+    utils::log_error "Either 'ai_api_key' or 'open_ai_api_key' (legacy) is required."
+  fi
 
   for var in "${required_vars[@]}"; do
     utils::env_variable_exist "$var"
