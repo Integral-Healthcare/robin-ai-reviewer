@@ -22,11 +22,6 @@ utils::verify_required_env_vars() {
     "github_api_url"
   )
 
-  # Check for AI API key (new or legacy)
-  if [[ -z "${ai_api_key:-}" && -z "${open_ai_api_key:-}" ]]; then
-    utils::log_error "Either 'ai_api_key' or 'open_ai_api_key' (legacy) is required."
-  fi
-
   for var in "${required_vars[@]}"; do
     utils::env_variable_exist "$var"
   done

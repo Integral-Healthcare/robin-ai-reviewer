@@ -30,7 +30,7 @@ Named after Batman's assistant, Robin AI is an open source Github action that au
 - A GitHub repository with pull request workflows
 - An API key for your chosen AI provider:
   - **OpenAI**: [Get an API key here](https://platform.openai.com/account/api-keys)
-  - **Claude (Anthropic)**: [Get an API key here](https://console.anthropic.com/)
+  - **Claude (Anthropic)**: [Get an API key here](https://console.anthropic.com/settings/keys)
 
 ## Installation
 1. In your Github repository, navigate to the "Actions" tab

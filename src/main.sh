@@ -59,10 +59,6 @@ main() {
   export AI_API_KEY="$ai_api_key"
   export AI_MODEL="$ai_model"
 
-  # Legacy exports for backward compatibility
-  export OPEN_AI_API_KEY="$ai_api_key"
-  export GPT_MODEL="$ai_model"
-
   local pr_number commit_diff ai_response
   pr_number=$(github::get_pr_number)
   commit_diff=$(github::get_commit_diff "$pr_number" "${files_to_ignore[*]}")
