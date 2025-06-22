@@ -12,8 +12,7 @@ source "$HOME_DIR/src/ai.sh"
 ##? Auto-reviews a Pull Request
 ##?
 ##? Usage:
-##?   main.sh --github_token=<token> --ai_provider=<provider> --ai_api_key=<key> --ai_model=<model> --github_api_url=<url> --files_to_ignore=<files>
-##?   main.sh --github_token=<token> --open_ai_api_key=<token> --gpt_model_name=<name> --github_api_url=<url> --files_to_ignore=<files> (legacy)
+##?   main.sh --github_token=<token> --ai_provider=<provider> --ai_api_key=<key> --ai_model=<model> --github_api_url=<url> --files_to_ignore=<files> --open_ai_api_key=<token> --gpt_model_name=<name>
 main() {
   local github_token ai_provider ai_api_key ai_model github_api_url files_to_ignore
   local open_ai_api_key gpt_model_name  # Legacy parameters
