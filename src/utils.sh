@@ -20,8 +20,6 @@ utils::verify_required_env_vars() {
     "GITHUB_EVENT_PATH"
     "github_token"
     "github_api_url"
-    "open_ai_api_key"
-    "gpt_model_name"
   )
 
   for var in "${required_vars[@]}"; do

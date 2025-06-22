@@ -4,13 +4,17 @@ inputs:
   GITHUB_TOKEN:
     description: 'GitHub API token'
     required: true
-  OPEN_AI_API_KEY:
-    description: 'Open API token'
-    required: true
-  gpt_model_name:
-    description: 'The OpenAI used to generate the chat completion'
+  AI_PROVIDER:
+    description: 'AI provider to use (openai or claude)'
     required: false
-    default: 'gpt-4-turbo'
+    default: 'openai'
+  AI_API_KEY:
+    description: 'API key for the selected AI provider'
+    required: true
+  AI_MODEL:
+    description: 'The AI model to use for generating reviews'
+    required: false
+    default: 'o4-mini'
   github_api_url:
     description: 'URL to the API of your Github Server, only necessary for Github Enterprise customers'
     required: false
@@ -19,15 +23,25 @@ inputs:
     description: 'Whitespace separated list of files to ignore'
     required: false
     default: ''
+  # Legacy support - will be deprecated
+  OPEN_AI_API_KEY:
+    description: '[DEPRECATED] Use AI_API_KEY instead. Open API token'
+    required: false
+  gpt_model_name:
+    description: '[DEPRECATED] Use AI_MODEL instead. The OpenAI used to generate the chat completion'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - --github_token=${{ inputs.GITHUB_TOKEN }}
-    - --open_ai_api_key=${{ inputs.OPEN_AI_API_KEY }}
-    - --gpt_model_name=${{ inputs.gpt_model_name }}
+    - --ai_provider=${{ inputs.AI_PROVIDER }}
+    - --ai_api_key=${{ inputs.AI_API_KEY }}
+    - --ai_model=${{ inputs.AI_MODEL }}
     - --github_api_url=${{ inputs.github_api_url }}
     - --files_to_ignore=${{ inputs.files_to_ignore }}
+    - --open_ai_api_key=${{ inputs.OPEN_AI_API_KEY }}
+    - --gpt_model_name=${{ inputs.gpt_model_name }}
 branding:
   icon: 'tag'
   color: 'purple'
