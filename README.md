@@ -172,6 +172,8 @@ For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_ke
 | `AI_PROVIDER` | No | `openai` | AI provider to use (`openai` or `claude`) |
 | `AI_API_KEY` | Yes | N/A | API key for the selected AI provider |
 | `AI_MODEL` | No | Provider-specific | AI model to use (see supported models below) |
+| `ai_max_tokens` | No | `8192` | Maximum tokens the model may generate in its review |
+| `max_diff_bytes` | No | `200000` | Soft cap on diff size in bytes; larger diffs are truncated before being sent to the model |
 | `github_api_url` | No | `https://api.github.com` | GitHub API URL (for enterprise) |
 | `files_to_ignore` | No | (empty) | Files to exclude from review |
 
@@ -183,6 +185,8 @@ For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_ke
 | `ai_provider` | No | `openai` | AI provider to use (`openai` or `claude`) |
 | `ai_api_key` | Yes | N/A | API key for the selected AI provider |
 | `ai_model` | No | Provider-specific | AI model to use |
+| `ai_max_tokens` | No | `8192` | Maximum tokens the model may generate in its review |
+| `max_diff_bytes` | No | `200000` | Soft cap on diff size in bytes; larger diffs are truncated |
 | `files_to_ignore` | No | (empty) | Files to exclude from review |
 
 ### Legacy Parameters (Deprecated — removed in v2.0, target 2026-Q3)

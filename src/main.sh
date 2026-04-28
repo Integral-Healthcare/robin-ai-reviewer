@@ -13,9 +13,9 @@ source "$HOME_DIR/src/ai.sh"
 ##? Auto-reviews a Pull Request
 ##?
 ##? Usage:
-##?   main.sh [--git_provider=<provider>] [--git_token=<token>] [--github_token=<token>] [--ai_provider=<provider>] [--ai_api_key=<key>] [--ai_model=<model>] [--github_api_url=<url>] [--files_to_ignore=<files>] [--open_ai_api_key=<token>] [--gpt_model_name=<name>]
+##?   main.sh [--git_provider=<provider>] [--git_token=<token>] [--github_token=<token>] [--ai_provider=<provider>] [--ai_api_key=<key>] [--ai_model=<model>] [--ai_max_tokens=<n>] [--max_diff_bytes=<n>] [--github_api_url=<url>] [--files_to_ignore=<files>] [--open_ai_api_key=<token>] [--gpt_model_name=<name>]
 main() {
-  local git_provider git_token github_token ai_provider ai_api_key ai_model github_api_url files_to_ignore
+  local git_provider git_token github_token ai_provider ai_api_key ai_model ai_max_tokens max_diff_bytes github_api_url files_to_ignore
   local open_ai_api_key gpt_model_name  # Legacy parameters
 
   eval "$(docpars -h "$(grep "^##?" "${BASH_SOURCE[0]}" | cut -c 5-)" : "$@")"
@@ -73,6 +73,15 @@ main() {
   export AI_PROVIDER="$ai_provider"
   export AI_API_KEY="$ai_api_key"
   export AI_MODEL="$ai_model"
+  if [[ -n "${ai_max_tokens:-}" ]]; then
+    export AI_MAX_TOKENS="$ai_max_tokens"
+  fi
+
+  # Soft cap on the diff size we send to the model. Anything larger gets
+  # truncated so a giant PR doesn't blow the context window or rack up
+  # surprise spend. Defaults to 200000 bytes (~50k tokens).
+  local diff_byte_cap
+  diff_byte_cap="${max_diff_bytes:-200000}"
 
   local review_number commit_diff ai_response
   case "$git_provider" in
@@ -96,6 +105,13 @@ main() {
   if [[ -z "$commit_diff" ]]; then
     utils::log_info "Nothing in the commit diff."
     exit 0
+  fi
+
+  local diff_size
+  diff_size=${#commit_diff}
+  if (( diff_size > diff_byte_cap )); then
+    utils::log_info "Diff is ${diff_size} bytes; truncating to ${diff_byte_cap} bytes for the model."
+    commit_diff="[Diff truncated to ${diff_byte_cap} of ${diff_size} bytes for model context limits.]"$'\n\n'"${commit_diff:0:$diff_byte_cap}"
   fi
 
   ai_response=$(ai::prompt_model "$commit_diff")

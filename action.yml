@@ -15,6 +15,14 @@ inputs:
     description: 'The AI model to use for generating reviews'
     required: false
     default: 'gpt-5-mini'
+  ai_max_tokens:
+    description: 'Maximum tokens the AI may generate in its review (default: 8192)'
+    required: false
+    default: ''
+  max_diff_bytes:
+    description: 'Soft cap on diff size in bytes before truncation (default: 200000)'
+    required: false
+    default: ''
   github_api_url:
     description: 'URL to the API of your Github Server, only necessary for Github Enterprise customers'
     required: false
@@ -38,6 +46,8 @@ runs:
     - --ai_provider=${{ inputs.AI_PROVIDER }}
     - --ai_api_key=${{ inputs.AI_API_KEY }}
     - --ai_model=${{ inputs.AI_MODEL }}
+    - --ai_max_tokens=${{ inputs.ai_max_tokens }}
+    - --max_diff_bytes=${{ inputs.max_diff_bytes }}
     - --github_api_url=${{ inputs.github_api_url }}
     - --files_to_ignore=${{ inputs.files_to_ignore }}
     - --open_ai_api_key=${{ inputs.OPEN_AI_API_KEY }}
