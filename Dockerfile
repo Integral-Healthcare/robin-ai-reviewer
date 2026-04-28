@@ -1,4 +1,4 @@
-FROM alpine:3.18 as docpars
+FROM alpine:3.23 as docpars
 
 ENV DOCPARS_VERSION=v0.3.0
 
@@ -8,7 +8,7 @@ RUN apk add --no-cache wget && \
     tar xvfz docpars.tar.gz -C ./ && \
     chmod +x docpars
 
-FROM alpine:3.18 as final
+FROM alpine:3.23 as final
 
 COPY --from=docpars /docpars /usr/local/bin/docpars
 
