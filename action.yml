@@ -14,7 +14,7 @@ inputs:
   AI_MODEL:
     description: 'The AI model to use for generating reviews'
     required: false
-    default: 'o4-mini'
+    default: 'gpt-5-mini'
   github_api_url:
     description: 'URL to the API of your Github Server, only necessary for Github Enterprise customers'
     required: false
@@ -23,12 +23,12 @@ inputs:
     description: 'Whitespace separated list of files to ignore'
     required: false
     default: ''
-  # Legacy support - will be deprecated
+  # Legacy support - scheduled for removal in v2.0 (target 2026-Q3)
   OPEN_AI_API_KEY:
-    description: '[DEPRECATED] Use AI_API_KEY instead. Open API token'
+    description: '[DEPRECATED — removed in v2.0 (target 2026-Q3)] Use AI_API_KEY instead. OpenAI API token.'
     required: false
   gpt_model_name:
-    description: '[DEPRECATED] Use AI_MODEL instead. The OpenAI used to generate the chat completion'
+    description: '[DEPRECATED — removed in v2.0 (target 2026-Q3)] Use AI_MODEL instead. The OpenAI model used to generate the chat completion.'
     required: false
 runs:
   using: 'docker'

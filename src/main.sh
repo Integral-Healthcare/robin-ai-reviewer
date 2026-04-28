@@ -36,15 +36,16 @@ main() {
     files_to_ignore=""
   fi
 
-  # Handle backward compatibility - use legacy params if new ones aren't provided
+  # Handle backward compatibility - use legacy params if new ones aren't provided.
+  # NOTE: OPEN_AI_API_KEY and gpt_model_name are scheduled for removal in v2.0 (target 2026-Q3).
   if [[ -n "${open_ai_api_key:-}" && -z "${ai_api_key:-}" ]]; then
     ai_api_key="$open_ai_api_key"
-    utils::log_info "Using legacy OPEN_AI_API_KEY parameter. Consider migrating to AI_API_KEY."
+    utils::log_info "[DEPRECATION] OPEN_AI_API_KEY will be removed in v2.0 (target 2026-Q3). Migrate to AI_API_KEY."
   fi
 
   if [[ -n "${gpt_model_name:-}" && -z "${ai_model:-}" ]]; then
     ai_model="$gpt_model_name"
-    utils::log_info "Using legacy gpt_model_name parameter. Consider migrating to AI_MODEL."
+    utils::log_info "[DEPRECATION] gpt_model_name will be removed in v2.0 (target 2026-Q3). Migrate to AI_MODEL."
   fi
 
   # Set default provider if not specified
@@ -56,13 +57,13 @@ main() {
   if [[ -z "${ai_model:-}" ]]; then
     case "$ai_provider" in
       "openai")
-        ai_model="o4-mini"
+        ai_model="gpt-5-mini"
         ;;
       "claude")
-        ai_model="claude-3-7-sonnet-20250219"
+        ai_model="claude-sonnet-4-5"
         ;;
       *)
-        ai_model="o4-mini"
+        ai_model="gpt-5-mini"
         ;;
     esac
   fi
