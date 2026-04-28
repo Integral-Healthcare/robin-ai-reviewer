@@ -31,14 +31,31 @@ utils::should_ignore_file() {
   local filename="$1"
   local files_to_ignore="$2"
 
-  local pattern
+  # Disable filename expansion for the duration of this function so an
+  # ignore pattern like `assets/*` is treated as a glob to compare
+  # against (via `[[ == $pattern ]]`) and not expanded against the
+  # working directory by the `for` loop.
+  local restore_glob=0
+  if [[ ! -o noglob ]]; then
+    set -f
+    restore_glob=1
+  fi
+
+  local pattern matched=1
   for pattern in $files_to_ignore; do
     pattern="${pattern%\"}"
     pattern="${pattern#\"}"
 
     # shellcheck disable=SC2053
-    [[ "$filename" == $pattern ]] && return 0
+    if [[ "$filename" == $pattern ]]; then
+      matched=0
+      break
+    fi
   done
 
-  return 1
+  if (( restore_glob )); then
+    set +f
+  fi
+
+  return "$matched"
 }

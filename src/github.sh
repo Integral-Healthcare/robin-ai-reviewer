@@ -29,7 +29,7 @@ github::get_commit_diff() {
 
   local diffs=""
   local page=1
-  local per_page=100
+  local per_page="${GITHUB_FILES_PER_PAGE:-100}"
 
   while true; do
     local body
