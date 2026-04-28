@@ -65,7 +65,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AI_PROVIDER: openai
           AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
-          AI_MODEL: o4-mini
+          AI_MODEL: gpt-5-mini
           files_to_ignore: |
             "README.md"
             "assets/*"
@@ -96,7 +96,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AI_PROVIDER: claude
           AI_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
-          AI_MODEL: claude-3-7-sonnet-20250219
+          AI_MODEL: claude-sonnet-4-5
           files_to_ignore: |
             "README.md"
             "assets/*"
@@ -126,7 +126,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
-          gpt_model_name: o4-mini
+          gpt_model_name: gpt-5-mini
           files_to_ignore: |
             "README.md"
             "assets/*"
@@ -156,7 +156,7 @@ robin_ai_review:
       --git_token="${GITLAB_TOKEN}"
       --ai_provider=openai
       --ai_api_key="${OPEN_AI_API_KEY}"
-      --ai_model=o4-mini
+      --ai_model=gpt-5-mini
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 ```
@@ -185,11 +185,27 @@ For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_ke
 | `ai_model` | No | Provider-specific | AI model to use |
 | `files_to_ignore` | No | (empty) | Files to exclude from review |
 
-### Legacy Parameters (Deprecated but still supported)
+### Legacy Parameters (Deprecated — removed in v2.0, target 2026-Q3)
 | Name | Required | Default | Description |
 |------|----------|---------|-------------|
-| `OPEN_AI_API_KEY` | No | N/A | [DEPRECATED] Use `AI_API_KEY` instead |
-| `gpt_model_name` | No | N/A | [DEPRECATED] Use `AI_MODEL` instead |
+| `OPEN_AI_API_KEY` | No | N/A | [DEPRECATED] Use `AI_API_KEY` instead. Will be removed in v2.0 (target 2026-Q3). |
+| `gpt_model_name` | No | N/A | [DEPRECATED] Use `AI_MODEL` instead. Will be removed in v2.0 (target 2026-Q3). |
+
+### Supported Models
+
+Robin AI passes the value of `AI_MODEL` straight through to the upstream provider, so any model your account has access to should work. Defaults are kept current with the latest GA release of each provider.
+
+**OpenAI** (default: `gpt-5-mini`)
+- `gpt-5`, `gpt-5-mini`, `gpt-5-nano`
+- `gpt-4.1`, `gpt-4.1-mini`
+- Reasoning models such as `o3`, `o4-mini` are also accepted.
+
+**Anthropic Claude** (default: `claude-sonnet-4-5`)
+- `claude-opus-4-5`
+- `claude-sonnet-4-5`
+- `claude-haiku-4-5`
+
+If you need a specific model snapshot (e.g., `claude-sonnet-4-5-20250929`), pass the dated alias directly via `AI_MODEL`.
 
 ## Usage
 
