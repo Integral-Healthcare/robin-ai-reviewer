@@ -9,13 +9,14 @@ source "$HOME_DIR/src/utils.sh"
 source "$HOME_DIR/src/github.sh"
 source "$HOME_DIR/src/gitlab.sh"
 source "$HOME_DIR/src/ai.sh"
+source "$HOME_DIR/src/review.sh"
 
 ##? Auto-reviews a Pull Request
 ##?
 ##? Usage:
-##?   main.sh [--git_provider=<provider>] [--git_token=<token>] [--github_token=<token>] [--ai_provider=<provider>] [--ai_api_key=<key>] [--ai_model=<model>] [--ai_max_tokens=<n>] [--max_diff_bytes=<n>] [--prompt_override=<text>] [--prompt_file=<path>] [--github_api_url=<url>] [--files_to_ignore=<files>] [--open_ai_api_key=<token>] [--gpt_model_name=<name>]
+##?   main.sh [--git_provider=<provider>] [--git_token=<token>] [--github_token=<token>] [--ai_provider=<provider>] [--ai_api_key=<key>] [--ai_model=<model>] [--ai_max_tokens=<n>] [--max_diff_bytes=<n>] [--prompt_override=<text>] [--prompt_file=<path>] [--review_mode=<mode>] [--github_api_url=<url>] [--files_to_ignore=<files>] [--open_ai_api_key=<token>] [--gpt_model_name=<name>]
 main() {
-  local git_provider git_token github_token ai_provider ai_api_key ai_model ai_max_tokens max_diff_bytes prompt_override prompt_file github_api_url files_to_ignore
+  local git_provider git_token github_token ai_provider ai_api_key ai_model ai_max_tokens max_diff_bytes prompt_override prompt_file review_mode github_api_url files_to_ignore
   local open_ai_api_key gpt_model_name  # Legacy parameters
 
   eval "$(docpars -h "$(grep "^##?" "${BASH_SOURCE[0]}" | cut -c 5-)" : "$@")"
@@ -97,6 +98,23 @@ main() {
     export AI_PROMPT_FILE="$prompt_file"
   fi
 
+  # Review mode: "comment" (default; one issue comment) or "review" (inline
+  # review via the GitHub Reviews API). Inline mode is currently GitHub-only.
+  if [[ -z "${review_mode:-}" ]]; then
+    review_mode="comment"
+  fi
+  if [[ "$review_mode" == "review" && "$git_provider" != "github" ]]; then
+    utils::log_info "review_mode=review only supported on GitHub; falling back to comment."
+    review_mode="comment"
+  fi
+  if [[ "$review_mode" == "review" ]]; then
+    # Override the prompt so the model emits structured JSON. User-supplied
+    # overrides still win — they may have their own JSON schema.
+    if [[ -z "${AI_PROMPT_OVERRIDE:-}" && -z "${AI_PROMPT_FILE:-}" ]]; then
+      export AI_PROMPT_OVERRIDE="$INLINE_REVIEW_PROMPT"
+    fi
+  fi
+
   # Soft cap on the diff size we send to the model. Anything larger gets
   # truncated so a giant PR doesn't blow the context window or rack up
   # surprise spend. Defaults to 200000 bytes (~50k tokens).
@@ -142,7 +160,11 @@ main() {
 
   case "$git_provider" in
     "github")
-      github::comment "$ai_response" "$review_number"
+      if [[ "$review_mode" == "review" ]]; then
+        review::create "$ai_response" "$review_number" "$commit_diff"
+      else
+        github::comment "$ai_response" "$review_number"
+      fi
       ;;
     "gitlab")
       gitlab::comment "$ai_response"

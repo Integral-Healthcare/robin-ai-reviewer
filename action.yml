@@ -31,6 +31,10 @@ inputs:
     description: 'Path (inside the workspace) to a file containing the system prompt to use instead of the bundled default.'
     required: false
     default: ''
+  review_mode:
+    description: 'Output format: "comment" (default; single PR comment) or "review" (inline line-anchored comments via the GitHub Reviews API).'
+    required: false
+    default: 'comment'
   github_api_url:
     description: 'URL to the API of your Github Server, only necessary for Github Enterprise customers'
     required: false
@@ -63,6 +67,7 @@ runs:
     - --max_diff_bytes=${{ inputs.max_diff_bytes }}
     - --prompt_override=${{ inputs.prompt_override }}
     - --prompt_file=${{ inputs.prompt_file }}
+    - --review_mode=${{ inputs.review_mode }}
     - --github_api_url=${{ inputs.github_api_url }}
     - --files_to_ignore=${{ inputs.files_to_ignore }}
     - --gpt_model_name=${{ inputs.gpt_model_name }}

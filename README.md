@@ -178,6 +178,7 @@ For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_ke
 | `max_diff_bytes` | No | `200000` | Soft cap on diff size in bytes; larger diffs are truncated before being sent to the model |
 | `prompt_override` | No | (empty) | Inline replacement for the system prompt. Takes precedence over `prompt_file`. |
 | `prompt_file` | No | (empty) | Path to a file in the workspace containing the system prompt to use instead of the bundled default. |
+| `review_mode` | No | `comment` | `comment` for one summary PR comment; `review` for inline line-anchored comments via the GitHub Reviews API. |
 | `github_api_url` | No | `https://api.github.com` | GitHub API URL (for enterprise) |
 | `files_to_ignore` | No | (empty) | Files to exclude from review |
 
@@ -216,6 +217,19 @@ Robin AI passes the value of `AI_MODEL` straight through to the upstream provide
 - `claude-haiku-4-5`
 
 If you need a specific model snapshot (e.g., `claude-sonnet-4-5-20250929`), pass the dated alias directly via `AI_MODEL`.
+
+### Inline review mode
+
+Set `review_mode: review` to have Robin post line-anchored comments via the GitHub Reviews API instead of one summary PR comment. In this mode the prompt asks the model for structured JSON, the response is validated against the diff, and any hallucinated line references are dropped before the review is posted. If the model returns invalid JSON, Robin falls back to the standard summary comment.
+
+```yml
+- uses: Integral-Healthcare/robin-ai-reviewer@v[INSERT_LATEST_RELEASE]
+  with:
+    AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
+    review_mode: review
+```
+
+Inline review currently requires GitHub. On GitLab the value is silently downgraded to `comment`.
 
 ### Custom prompts
 
