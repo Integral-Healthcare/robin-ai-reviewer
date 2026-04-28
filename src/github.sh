@@ -25,7 +25,7 @@ github::get_commit_diff() {
 
       [[ "$status" == "removed" ]] && continue
 
-      if ! github::should_ignore_file "$filename" "$files_to_ignore"; then
+      if ! utils::should_ignore_file "$filename" "$files_to_ignore"; then
         diffs+=$(jq -r '.patch' <<< "$file")
         diffs+=$'\n\n'
       fi
@@ -33,18 +33,6 @@ github::get_commit_diff() {
 
     echo "$diffs"
   fi
-}
-
-github::should_ignore_file() {
-  local -r filename="$1"
-  local -r files_to_ignore="$2"
-
-  for pattern in $files_to_ignore; do
-    # shellcheck disable=SC2053
-    [[ "$filename" == $pattern ]] && return 0
-  done
-
-  return 1
 }
 
 github::comment() {

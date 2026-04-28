@@ -15,21 +15,30 @@ utils::log_error() {
 }
 
 utils::verify_required_env_vars() {
-  local required_vars=(
-    "GITHUB_REPOSITORY"
-    "GITHUB_EVENT_PATH"
-    "github_token"
-    "github_api_url"
-  )
-
-  for var in "${required_vars[@]}"; do
+  for var in "$@"; do
     utils::env_variable_exist "$var"
   done
 }
 
 utils::env_variable_exist() {
   local var_name="$1"
-  if [[ -z "${!var_name}" ]]; then
+  if [[ -z "${!var_name:-}" ]]; then
     utils::log_error "The env variable '$var_name' is required."
   fi
+}
+
+utils::should_ignore_file() {
+  local filename="$1"
+  local files_to_ignore="$2"
+
+  local pattern
+  for pattern in $files_to_ignore; do
+    pattern="${pattern%\"}"
+    pattern="${pattern#\"}"
+
+    # shellcheck disable=SC2053
+    [[ "$filename" == $pattern ]] && return 0
+  done
+
+  return 1
 }

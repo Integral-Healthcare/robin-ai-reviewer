@@ -10,7 +10,7 @@
   <img src="/assets/robin.png" alt="Robin watercolor image" style="width: 350px;"/>
 </div>
 
-Named after Batman's assistant, Robin AI is an open source Github action that automatically reviews pull requests using AI models from OpenAI (GPT) or Anthropic (Claude). It analyzes your code changes and provides:
+Named after Batman's assistant, Robin AI is an open source GitHub Action and GitLab CI job that automatically reviews pull requests and merge requests using AI models from OpenAI (GPT) or Anthropic (Claude). It analyzes your code changes and provides:
 - A quality score (0-100)
 - Actionable improvement suggestions
 - Sample code snippets for better implementation
@@ -27,12 +27,15 @@ Named after Batman's assistant, Robin AI is an open source Github action that au
 - [License](#license)
 
 ## Prerequisites
-- A GitHub repository with pull request workflows
+- A GitHub repository with pull request workflows or a GitLab project with merge request pipelines
 - An API key for your chosen AI provider:
   - **OpenAI**: [Get an API key here](https://platform.openai.com/account/api-keys)
   - **Claude (Anthropic)**: [Get an API key here](https://console.anthropic.com/settings/keys)
 
 ## Installation
+
+### GitHub Actions
+
 1. In your Github repository, navigate to the "Actions" tab
 2. Click "New workflow"
 3. Choose "Set up a workflow yourself"
@@ -93,7 +96,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AI_PROVIDER: claude
           AI_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
-          AI_MODEL: claude-3-sonnet-20240229
+          AI_MODEL: claude-3-7-sonnet-20250219
           files_to_ignore: |
             "README.md"
             "assets/*"
@@ -136,9 +139,33 @@ jobs:
    - For Claude: Create a secret named `CLAUDE_API_KEY`
    - Paste your API key as the value
 
+### GitLab CI
+
+Robin AI runs in GitLab CI from the published Docker image. Add a project or personal access token with the `api` scope as a CI/CD variable named `GITLAB_TOKEN`, plus the API key for your selected AI provider.
+
+```yml
+robin_ai_review:
+  image:
+    name: ghcr.io/integral-healthcare/robin-ai-reviewer:latest
+    entrypoint: [""]
+  stage: test
+  script:
+    - >
+      /entrypoint.sh
+      --git_provider=gitlab
+      --git_token="${GITLAB_TOKEN}"
+      --ai_provider=openai
+      --ai_api_key="${OPEN_AI_API_KEY}"
+      --ai_model=o4-mini
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+```
+
+For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_key`, and set `--ai_model` to the Claude model you want to use.
+
 ## Configuration
 
-### Parameters (Recommended)
+### GitHub Action Parameters
 | Name | Required | Default | Description |
 |------|----------|---------|-------------|
 | `GITHUB_TOKEN` | Yes | Auto-supplied | GitHub token for API access |
@@ -146,6 +173,16 @@ jobs:
 | `AI_API_KEY` | Yes | N/A | API key for the selected AI provider |
 | `AI_MODEL` | No | Provider-specific | AI model to use (see supported models below) |
 | `github_api_url` | No | `https://api.github.com` | GitHub API URL (for enterprise) |
+| `files_to_ignore` | No | (empty) | Files to exclude from review |
+
+### Docker and GitLab Arguments
+| Name | Required | Default | Description |
+|------|----------|---------|-------------|
+| `git_provider` | No | `github` | Git provider to review (`github` or `gitlab`) |
+| `git_token` | Yes for GitLab | N/A | GitLab token with the `api` scope |
+| `ai_provider` | No | `openai` | AI provider to use (`openai` or `claude`) |
+| `ai_api_key` | Yes | N/A | API key for the selected AI provider |
+| `ai_model` | No | Provider-specific | AI model to use |
 | `files_to_ignore` | No | (empty) | Files to exclude from review |
 
 ### Legacy Parameters (Deprecated but still supported)
@@ -156,7 +193,7 @@ jobs:
 
 ## Usage
 
-When Robin AI runs, it will post a comment on the pull request with its score out of 100, suggested improvements, and sample code for improvement. You can use this information to improve the quality of your code and make your pull requests more likely to be accepted.
+When Robin AI runs, it will post a comment on the pull request or merge request with its score out of 100, suggested improvements, and sample code for improvement. You can use this information to improve the quality of your code and make your pull requests more likely to be accepted.
 
 ## Example Output
 When Robin AI reviews your pull request, you'll see a comment like this:
