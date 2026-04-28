@@ -8,6 +8,7 @@ FROM --platform=$BUILDPLATFORM alpine:3.23 AS docpars
 ARG TARGETARCH
 ENV DOCPARS_VERSION=v0.3.0
 
+# hadolint ignore=DL3018
 RUN apk add --no-cache wget && \
   case "$TARGETARCH" in \
     amd64) DOCPARS_TARGET="x86_64-unknown-linux-musl" ;; \
@@ -27,6 +28,7 @@ COPY --from=docpars /usr/local/bin/docpars /usr/local/bin/docpars
 
 # bash, curl, jq are required by the action.
 # gcompat provides glibc shims so the docpars aarch64-gnu binary can run on Alpine arm64.
+# hadolint ignore=DL3018
 RUN apk add --no-cache bash curl jq && \
   if [ "$TARGETARCH" = "arm64" ]; then apk add --no-cache gcompat; fi
 

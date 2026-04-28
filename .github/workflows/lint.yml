@@ -3,13 +3,24 @@ name: Lint
 on: [pull_request]
 
 jobs:
-  lint:
+  shellcheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        uses: ludeeus/action-shellcheck@2.0.0
         with:
-          severity: error
-          scandir: './src'
+          severity: warning
+          scandir: '.'
+
+  hadolint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: warning

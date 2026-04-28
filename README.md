@@ -149,13 +149,15 @@ robin_ai_review:
     name: ghcr.io/integral-healthcare/robin-ai-reviewer:latest
     entrypoint: [""]
   stage: test
+  variables:
+    # Pass secrets via env so they don't show up in argv / `ps` / job logs.
+    AI_API_KEY_INPUT: $OPEN_AI_API_KEY
   script:
     - >
       /entrypoint.sh
       --git_provider=gitlab
       --git_token="${GITLAB_TOKEN}"
       --ai_provider=openai
-      --ai_api_key="${OPEN_AI_API_KEY}"
       --ai_model=gpt-5-mini
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'

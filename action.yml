@@ -41,16 +41,20 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  # Secrets are passed via env so they don't appear in `ps` listings or in
+  # the workflow log when the entrypoint echoes its arguments. Non-secret
+  # configuration is still passed via args.
+  env:
+    GITHUB_TOKEN_INPUT: ${{ inputs.GITHUB_TOKEN }}
+    AI_API_KEY_INPUT: ${{ inputs.AI_API_KEY }}
+    OPEN_AI_API_KEY_INPUT: ${{ inputs.OPEN_AI_API_KEY }}
   args:
-    - --github_token=${{ inputs.GITHUB_TOKEN }}
     - --ai_provider=${{ inputs.AI_PROVIDER }}
-    - --ai_api_key=${{ inputs.AI_API_KEY }}
     - --ai_model=${{ inputs.AI_MODEL }}
     - --ai_max_tokens=${{ inputs.ai_max_tokens }}
     - --max_diff_bytes=${{ inputs.max_diff_bytes }}
     - --github_api_url=${{ inputs.github_api_url }}
     - --files_to_ignore=${{ inputs.files_to_ignore }}
-    - --open_ai_api_key=${{ inputs.OPEN_AI_API_KEY }}
     - --gpt_model_name=${{ inputs.gpt_model_name }}
 branding:
   icon: 'tag'
