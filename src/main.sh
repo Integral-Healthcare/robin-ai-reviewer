@@ -10,13 +10,14 @@ source "$HOME_DIR/src/github.sh"
 source "$HOME_DIR/src/gitlab.sh"
 source "$HOME_DIR/src/ai.sh"
 source "$HOME_DIR/src/review.sh"
+source "$HOME_DIR/src/chunked.sh"
 
 ##? Auto-reviews a Pull Request
 ##?
 ##? Usage:
-##?   main.sh [--git_provider=<provider>] [--git_token=<token>] [--github_token=<token>] [--ai_provider=<provider>] [--ai_api_key=<key>] [--ai_model=<model>] [--ai_max_tokens=<n>] [--max_diff_bytes=<n>] [--prompt_override=<text>] [--prompt_file=<path>] [--review_mode=<mode>] [--github_api_url=<url>] [--files_to_ignore=<files>] [--open_ai_api_key=<token>] [--gpt_model_name=<name>]
+##?   main.sh [--git_provider=<provider>] [--git_token=<token>] [--github_token=<token>] [--ai_provider=<provider>] [--ai_api_key=<key>] [--ai_model=<model>] [--ai_max_tokens=<n>] [--max_diff_bytes=<n>] [--chunk_threshold_bytes=<n>] [--prompt_override=<text>] [--prompt_file=<path>] [--review_mode=<mode>] [--github_api_url=<url>] [--files_to_ignore=<files>] [--open_ai_api_key=<token>] [--gpt_model_name=<name>]
 main() {
-  local git_provider git_token github_token ai_provider ai_api_key ai_model ai_max_tokens max_diff_bytes prompt_override prompt_file review_mode github_api_url files_to_ignore
+  local git_provider git_token github_token ai_provider ai_api_key ai_model ai_max_tokens max_diff_bytes chunk_threshold_bytes prompt_override prompt_file review_mode github_api_url files_to_ignore
   local open_ai_api_key gpt_model_name  # Legacy parameters
 
   eval "$(docpars -h "$(grep "^##?" "${BASH_SOURCE[0]}" | cut -c 5-)" : "$@")"
@@ -121,6 +122,13 @@ main() {
   local diff_byte_cap
   diff_byte_cap="${max_diff_bytes:-200000}"
 
+  # When the diff exceeds chunk_threshold_bytes we split per-file and run
+  # the AI over each chunk in turn, concatenating the results. Disabled in
+  # review mode because we'd need to merge structured JSON from several
+  # responses (future work). 0 disables chunking entirely.
+  local chunk_cap
+  chunk_cap="${chunk_threshold_bytes:-100000}"
+
   local review_number commit_diff ai_response
   case "$git_provider" in
     "github")
@@ -147,12 +155,22 @@ main() {
 
   local diff_size
   diff_size=${#commit_diff}
-  if (( diff_size > diff_byte_cap )); then
-    utils::log_info "Diff is ${diff_size} bytes; truncating to ${diff_byte_cap} bytes for the model."
-    commit_diff="[Diff truncated to ${diff_byte_cap} of ${diff_size} bytes for model context limits.]"$'\n\n'"${commit_diff:0:$diff_byte_cap}"
+
+  local should_chunk=0
+  if (( chunk_cap > 0 )) && (( diff_size > chunk_cap )) && [[ "$review_mode" != "review" ]]; then
+    should_chunk=1
   fi
 
-  ai_response=$(ai::prompt_model "$commit_diff")
+  if (( should_chunk )); then
+    utils::log_info "Diff is ${diff_size} bytes; running per-file chunked review (threshold ${chunk_cap})."
+    ai_response=$(chunked::review "$commit_diff")
+  else
+    if (( diff_size > diff_byte_cap )); then
+      utils::log_info "Diff is ${diff_size} bytes; truncating to ${diff_byte_cap} bytes for the model."
+      commit_diff="[Diff truncated to ${diff_byte_cap} of ${diff_size} bytes for model context limits.]"$'\n\n'"${commit_diff:0:$diff_byte_cap}"
+    fi
+    ai_response=$(ai::prompt_model "$commit_diff")
+  fi
 
   if [[ -z "$ai_response" ]]; then
     utils::log_error "AI response was empty. Double check your API key and billing details."
