@@ -13,9 +13,9 @@ source "$HOME_DIR/src/ai.sh"
 ##? Auto-reviews a Pull Request
 ##?
 ##? Usage:
-##?   main.sh [--git_provider=<provider>] [--git_token=<token>] [--github_token=<token>] [--ai_provider=<provider>] [--ai_api_key=<key>] [--ai_model=<model>] [--ai_max_tokens=<n>] [--max_diff_bytes=<n>] [--github_api_url=<url>] [--files_to_ignore=<files>] [--open_ai_api_key=<token>] [--gpt_model_name=<name>]
+##?   main.sh [--git_provider=<provider>] [--git_token=<token>] [--github_token=<token>] [--ai_provider=<provider>] [--ai_api_key=<key>] [--ai_model=<model>] [--ai_max_tokens=<n>] [--max_diff_bytes=<n>] [--prompt_override=<text>] [--prompt_file=<path>] [--github_api_url=<url>] [--files_to_ignore=<files>] [--open_ai_api_key=<token>] [--gpt_model_name=<name>]
 main() {
-  local git_provider git_token github_token ai_provider ai_api_key ai_model ai_max_tokens max_diff_bytes github_api_url files_to_ignore
+  local git_provider git_token github_token ai_provider ai_api_key ai_model ai_max_tokens max_diff_bytes prompt_override prompt_file github_api_url files_to_ignore
   local open_ai_api_key gpt_model_name  # Legacy parameters
 
   eval "$(docpars -h "$(grep "^##?" "${BASH_SOURCE[0]}" | cut -c 5-)" : "$@")"
@@ -89,6 +89,12 @@ main() {
   export AI_MODEL="$ai_model"
   if [[ -n "${ai_max_tokens:-}" ]]; then
     export AI_MAX_TOKENS="$ai_max_tokens"
+  fi
+  if [[ -n "${prompt_override:-}" ]]; then
+    export AI_PROMPT_OVERRIDE="$prompt_override"
+  fi
+  if [[ -n "${prompt_file:-}" ]]; then
+    export AI_PROMPT_FILE="$prompt_file"
   fi
 
   # Soft cap on the diff size we send to the model. Anything larger gets

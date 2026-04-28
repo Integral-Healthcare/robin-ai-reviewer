@@ -176,6 +176,8 @@ For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_ke
 | `AI_MODEL` | No | Provider-specific | AI model to use (see supported models below) |
 | `ai_max_tokens` | No | `8192` | Maximum tokens the model may generate in its review |
 | `max_diff_bytes` | No | `200000` | Soft cap on diff size in bytes; larger diffs are truncated before being sent to the model |
+| `prompt_override` | No | (empty) | Inline replacement for the system prompt. Takes precedence over `prompt_file`. |
+| `prompt_file` | No | (empty) | Path to a file in the workspace containing the system prompt to use instead of the bundled default. |
 | `github_api_url` | No | `https://api.github.com` | GitHub API URL (for enterprise) |
 | `files_to_ignore` | No | (empty) | Files to exclude from review |
 
@@ -189,6 +191,8 @@ For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_ke
 | `ai_model` | No | Provider-specific | AI model to use |
 | `ai_max_tokens` | No | `8192` | Maximum tokens the model may generate in its review |
 | `max_diff_bytes` | No | `200000` | Soft cap on diff size in bytes; larger diffs are truncated |
+| `prompt_override` | No | (empty) | Inline replacement for the system prompt |
+| `prompt_file` | No | (empty) | Path to a file containing a custom system prompt |
 | `files_to_ignore` | No | (empty) | Files to exclude from review |
 
 ### Legacy Parameters (Deprecated — removed in v2.0, target 2026-Q3)
@@ -212,6 +216,22 @@ Robin AI passes the value of `AI_MODEL` straight through to the upstream provide
 - `claude-haiku-4-5`
 
 If you need a specific model snapshot (e.g., `claude-sonnet-4-5-20250929`), pass the dated alias directly via `AI_MODEL`.
+
+### Custom prompts
+
+You can replace the bundled review prompt without forking the action:
+
+- **`prompt_override`** — pass a prompt string directly in your workflow. Useful for short, repo-specific guidance.
+- **`prompt_file`** — point at a file inside your repo (e.g., `.github/robin-prompt.md`). The file's contents become the system prompt.
+
+`prompt_override` takes precedence when both are set. If neither is set, Robin uses its built-in prompt.
+
+```yml
+- uses: Integral-Healthcare/robin-ai-reviewer@v[INSERT_LATEST_RELEASE]
+  with:
+    AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
+    prompt_file: .github/robin-prompt.md
+```
 
 ## Usage
 
