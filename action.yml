@@ -23,6 +23,10 @@ inputs:
     description: 'Soft cap on diff size in bytes before truncation (default: 200000)'
     required: false
     default: ''
+  chunk_threshold_bytes:
+    description: 'When the diff exceeds this many bytes, split per-file and review each chunk individually (default: 100000; 0 to disable). Ignored in review_mode=review.'
+    required: false
+    default: ''
   prompt_override:
     description: 'Inline replacement for the system prompt. Takes precedence over prompt_file.'
     required: false
@@ -65,6 +69,7 @@ runs:
     - --ai_model=${{ inputs.AI_MODEL }}
     - --ai_max_tokens=${{ inputs.ai_max_tokens }}
     - --max_diff_bytes=${{ inputs.max_diff_bytes }}
+    - --chunk_threshold_bytes=${{ inputs.chunk_threshold_bytes }}
     - --prompt_override=${{ inputs.prompt_override }}
     - --prompt_file=${{ inputs.prompt_file }}
     - --review_mode=${{ inputs.review_mode }}

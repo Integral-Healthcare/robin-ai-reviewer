@@ -176,6 +176,7 @@ For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_ke
 | `AI_MODEL` | No | Provider-specific | AI model to use (see supported models below) |
 | `ai_max_tokens` | No | `8192` | Maximum tokens the model may generate in its review |
 | `max_diff_bytes` | No | `200000` | Soft cap on diff size in bytes; larger diffs are truncated before being sent to the model |
+| `chunk_threshold_bytes` | No | `100000` | When the diff exceeds this many bytes, split per-file and review each chunk individually. Set to `0` to disable. Ignored in `review_mode=review`. |
 | `prompt_override` | No | (empty) | Inline replacement for the system prompt. Takes precedence over `prompt_file`. |
 | `prompt_file` | No | (empty) | Path to a file in the workspace containing the system prompt to use instead of the bundled default. |
 | `review_mode` | No | `comment` | `comment` for one summary PR comment; `review` for inline line-anchored comments via the GitHub Reviews API. |
@@ -217,6 +218,12 @@ Robin AI passes the value of `AI_MODEL` straight through to the upstream provide
 - `claude-haiku-4-5`
 
 If you need a specific model snapshot (e.g., `claude-sonnet-4-5-20250929`), pass the dated alias directly via `AI_MODEL`.
+
+### Large pull requests
+
+By default, when the combined diff exceeds `chunk_threshold_bytes` (100KB), Robin splits the diff per file and reviews each file with its own AI call. The aggregated feedback is posted as a single comment with one section per file. This avoids the "diff truncated" path on big PRs and keeps reviews actionable on a per-file basis.
+
+Set `chunk_threshold_bytes: 0` to disable chunking entirely, or raise the threshold for models with larger context windows. Chunked review is currently bypassed when `review_mode: review` is set; that combination is a future enhancement.
 
 ### Inline review mode
 
