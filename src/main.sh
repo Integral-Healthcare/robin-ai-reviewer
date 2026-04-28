@@ -20,6 +20,20 @@ main() {
 
   eval "$(docpars -h "$(grep "^##?" "${BASH_SOURCE[0]}" | cut -c 5-)" : "$@")"
 
+  # Prefer secrets passed via env (so they don't show up in `ps` or be
+  # echoed back into workflow logs). Fall back to CLI flags so the
+  # docker / GitLab CI usage still works for users invoking the entrypoint
+  # directly.
+  if [[ -n "${GITHUB_TOKEN_INPUT:-}" && -z "${github_token:-}" ]]; then
+    github_token="$GITHUB_TOKEN_INPUT"
+  fi
+  if [[ -n "${AI_API_KEY_INPUT:-}" && -z "${ai_api_key:-}" ]]; then
+    ai_api_key="$AI_API_KEY_INPUT"
+  fi
+  if [[ -n "${OPEN_AI_API_KEY_INPUT:-}" && -z "${open_ai_api_key:-}" ]]; then
+    open_ai_api_key="$OPEN_AI_API_KEY_INPUT"
+  fi
+
   if [[ -z "${git_provider:-}" ]]; then
     git_provider="github"
   fi
