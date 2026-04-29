@@ -75,6 +75,8 @@ jobs:
           files_to_ignore: 'README.md assets/* package-lock.json'
 ```
 
+> **Note:** `files_to_ignore` must be written as a single-line, whitespace-separated string (as shown above, e.g. `'README.md assets/* package-lock.json'`). Do not use YAML block scalars (`|` or `>`) — embedded newlines break CLI argument parsing.
+
 ### Using Claude (Anthropic)
 ```yml
 name: Robin AI Reviewer
@@ -190,7 +192,7 @@ For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_ke
 | `prompt_file` | No | (empty) | Path to a file in the workspace containing the system prompt to use instead of the bundled default. |
 | `review_mode` | No | `comment` | `comment` for one summary PR comment; `review` for inline line-anchored comments via the GitHub Reviews API. |
 | `github_api_url` | No | `https://api.github.com` | GitHub API URL (for enterprise) |
-| `files_to_ignore` | No | (empty) | Files to exclude from review |
+| `files_to_ignore` | No | (empty) | Single-line, whitespace-separated list of files to exclude from review (e.g. `'README.md assets/*'`). Do not use YAML block scalars (`\|` or `>`) — embedded newlines break CLI argument parsing. |
 
 ### Docker and GitLab Arguments
 | Name | Required | Default | Description |
@@ -204,7 +206,7 @@ For Claude, set `--ai_provider=claude`, pass your Claude API key to `--ai_api_ke
 | `max_diff_bytes` | No | `200000` | Soft cap on diff size in bytes; larger diffs are truncated |
 | `prompt_override` | No | (empty) | Inline replacement for the system prompt |
 | `prompt_file` | No | (empty) | Path to a file containing a custom system prompt |
-| `files_to_ignore` | No | (empty) | Files to exclude from review |
+| `files_to_ignore` | No | (empty) | Single-line, whitespace-separated list of files to exclude from review (e.g. `'README.md assets/*'`). Do not use YAML block scalars (`\|` or `>`) — embedded newlines break CLI argument parsing. |
 
 ### Legacy Parameters (Deprecated — removed in v2.0, target 2026-Q3)
 | Name | Required | Default | Description |

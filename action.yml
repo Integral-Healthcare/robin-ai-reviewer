@@ -44,7 +44,7 @@ inputs:
     required: false
     default: 'https://api.github.com'
   files_to_ignore:
-    description: 'Whitespace separated list of files to ignore'
+    description: 'Single-line, whitespace-separated list of files to ignore (e.g. "README.md assets/* package-lock.json"). Do not use YAML block scalars (| or >); embedded newlines break CLI arg parsing.'
     required: false
     default: ''
   # Legacy support - scheduled for removal in v2.0 (target 2026-Q3)

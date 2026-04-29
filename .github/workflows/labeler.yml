@@ -11,5 +11,4 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ignore_file_deletions: 'true'
-          files_to_ignore: |
-            "README.md"
+          files_to_ignore: 'README.md'
