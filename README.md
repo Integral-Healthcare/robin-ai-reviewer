@@ -51,6 +51,7 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
       - ready_for_review
 
 jobs:
@@ -82,6 +83,7 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
       - ready_for_review
 
 jobs:
@@ -113,6 +115,7 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
       - ready_for_review
 
 jobs:

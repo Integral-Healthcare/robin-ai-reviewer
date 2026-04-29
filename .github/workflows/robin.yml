@@ -1,15 +1,21 @@
 name: Robin AI Reviewer
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
     types:
       - opened
       - reopened
+      - synchronize
       - ready_for_review
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
 jobs:
-  build:
+  review:
     runs-on: ubuntu-latest
     name: Review the open PR
     steps:
