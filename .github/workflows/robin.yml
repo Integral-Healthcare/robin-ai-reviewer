@@ -26,6 +26,4 @@ jobs:
           AI_PROVIDER: claude
           AI_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
           AI_MODEL: claude-sonnet-4-5
-          files_to_ignore: |
-            "README.md"
-            "assets/*"
+          files_to_ignore: 'README.md assets/*'
