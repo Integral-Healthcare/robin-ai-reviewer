@@ -50,7 +50,8 @@ setup() {
   unset AI_PROMPT_OVERRIDE AI_PROMPT_FILE
   run ai::resolve_prompt
   [ "$status" -eq 0 ]
-  [[ "$output" == *"Pull Request Code Reviewer"* ]]
+  [[ "$output" == *"senior code reviewer"* ]]
+  [[ "$output" == *"Scoring rubric"* ]]
 }
 
 @test "resolve_prompt: AI_PROMPT_OVERRIDE wins" {
