@@ -54,6 +54,11 @@ on:
       - synchronize
       - ready_for_review
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -83,6 +88,11 @@ on:
       - synchronize
       - ready_for_review
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -111,6 +121,11 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   build:

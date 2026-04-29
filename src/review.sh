@@ -137,6 +137,7 @@ review::create() {
 
   local api_url="$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$pr_number/reviews"
   curl -sSL \
+    --fail-with-body \
     --retry 3 --retry-delay 2 --retry-connrefused --max-time 60 \
     -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \

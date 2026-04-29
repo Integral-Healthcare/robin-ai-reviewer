@@ -96,3 +96,14 @@ JSON
   [[ "$output" == *"diff --git a/src/main.sh b/src/main.sh"* ]]
   [[ "$output" != *"package-lock.json"* ]]
 }
+
+@test "comment: fails when GitHub returns an HTTP error" {
+  curl() {
+    echo '{"message":"Resource not accessible by integration","status":"403"}'
+    return 22
+  }
+
+  run github::comment "review body" 42
+  [ "$status" -eq 22 ]
+  [[ "$output" == *"Resource not accessible by integration"* ]]
+}

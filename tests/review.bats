@@ -127,3 +127,20 @@ diff --git a/src/bar.py b/src/bar.py
   [[ "$output" != *"hallucinated"* ]]
   [[ "$output" == *"Score: 92"* ]]
 }
+
+@test "create: fails when GitHub returns an HTTP error" {
+  export GITHUB_API_URL="https://api.github.example"
+  export GITHUB_REPOSITORY="acme/widget"
+  export GITHUB_TOKEN="t"
+
+  curl() {
+    echo '{"message":"Resource not accessible by integration","status":"403"}'
+    return 22
+  }
+
+  ai='{"summary":"needs posting","score":80,"comments":[]}'
+
+  run review::create "$ai" 42 "$SAMPLE_DIFF"
+  [ "$status" -eq 22 ]
+  [[ "$output" == *"Resource not accessible by integration"* ]]
+}
