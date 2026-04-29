@@ -51,7 +51,13 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
       - ready_for_review
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   build:
@@ -66,10 +72,7 @@ jobs:
           AI_PROVIDER: openai
           AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
           AI_MODEL: gpt-5-mini
-          files_to_ignore: |
-            "README.md"
-            "assets/*"
-            "package-lock.json"
+          files_to_ignore: 'README.md assets/* package-lock.json'
 ```
 
 ### Using Claude (Anthropic)
@@ -82,7 +85,13 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
       - ready_for_review
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   build:
@@ -97,10 +106,7 @@ jobs:
           AI_PROVIDER: claude
           AI_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
           AI_MODEL: claude-sonnet-4-5
-          files_to_ignore: |
-            "README.md"
-            "assets/*"
-            "package-lock.json"
+          files_to_ignore: 'README.md assets/* package-lock.json'
 ```
 
 ### Legacy Configuration (Still Supported)
@@ -113,7 +119,13 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
       - ready_for_review
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   build:
@@ -127,10 +139,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
           gpt_model_name: gpt-5-mini
-          files_to_ignore: |
-            "README.md"
-            "assets/*"
-            "package-lock.json"
+          files_to_ignore: 'README.md assets/* package-lock.json'
 ```
 
 5. Add your API key as a repository secret:

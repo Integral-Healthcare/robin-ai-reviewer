@@ -20,6 +20,7 @@ github::get_commit_diff() {
 
   if [[ -z "$files_to_ignore" ]]; then
     curl -sSL \
+      --fail-with-body \
       --retry 3 --retry-delay 2 --retry-connrefused --max-time 120 \
       -H "Authorization: token $GITHUB_TOKEN" \
       -H "$GITHUB_API_HEADER" \
@@ -34,6 +35,7 @@ github::get_commit_diff() {
   while true; do
     local body
     body=$(curl -sSL \
+      --fail-with-body \
       --retry 3 --retry-delay 2 --retry-connrefused --max-time 120 \
       -H "Authorization: token $GITHUB_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
@@ -74,6 +76,7 @@ github::comment() {
   local -r api_url="$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/issues/$pr_number/comments"
 
   curl -sSL \
+    --fail-with-body \
     --retry 3 --retry-delay 2 --retry-connrefused --max-time 60 \
     -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
