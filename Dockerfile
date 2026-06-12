@@ -3,7 +3,7 @@
 # Multi-arch build. BuildKit auto-supplies TARGETARCH ("amd64" or "arm64").
 # docpars only ships musl for x86_64; the aarch64 build is GNU-libc, so on
 # Alpine arm64 we install `gcompat` to provide a glibc shim.
-FROM --platform=$BUILDPLATFORM alpine:3.23 AS docpars
+FROM --platform=$BUILDPLATFORM alpine:3.24 AS docpars
 
 ARG TARGETARCH
 ENV DOCPARS_VERSION=v0.3.0
@@ -20,7 +20,7 @@ RUN apk add --no-cache wget && \
   tar xzf /tmp/docpars.tar.gz -C /usr/local/bin/ && \
   chmod +x /usr/local/bin/docpars
 
-FROM alpine:3.23 AS final
+FROM alpine:3.24 AS final
 
 ARG TARGETARCH
 
