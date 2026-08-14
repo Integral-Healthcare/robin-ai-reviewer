@@ -2,10 +2,16 @@ name: labeler
 
 on: [pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   labeler:
     runs-on: ubuntu-latest
     name: Label the PR size
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: codelytv/pr-size-labeler@095a41fca88b8764fd9e008ad269bcdb82bb38b9 # v1.10.4
         with:
