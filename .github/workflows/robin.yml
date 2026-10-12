@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   review:
-    runs-on: ubuntu-latest
+    runs-on: "peak-ubuntu-24.04-4"
     name: Review the open PR
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
